@@ -7,10 +7,19 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Alsein.Utilities.sln",
-                "/consoleloggerparameters:Encoding=UTF-8"
+                "${workspaceFolder}/Alsein.Utilities.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/test/Alsein.Utilities.Test/Alsein.Utilities.Test.csproj"
+            ],
+            "problemMatcher": []
         }
     ]
 }

@@ -5,15 +5,15 @@ namespace Alsein.Utilities
 {
     public static partial class FunctionalExtensions
     {
-        private class UsingPromise
+        private class UsingQuotation
         {
             private Delegate Evaluater { get; }
 
-            private UsingPromise Parent { get; }
+            private UsingQuotation Parent { get; }
 
             protected virtual object Argument => Parent.Argument;
 
-            protected UsingPromise(Delegate evaluater, UsingPromise parent)
+            protected UsingQuotation(Delegate evaluater, UsingQuotation parent)
             {
                 Evaluater = evaluater;
                 Parent = parent;
@@ -46,18 +46,18 @@ namespace Alsein.Utilities
             }
         }
 
-        private class UsingPromise<TResult> : UsingPromise, IUsingPromise<TResult>
+        private class UsingQuotation<TResult> : UsingQuotation, IUsingQuotation<TResult>
         {
-            public UsingPromise(Delegate evaluater, UsingPromise parent) : base(evaluater, parent) { }
+            public UsingQuotation(Delegate evaluater, UsingQuotation parent) : base(evaluater, parent) { }
 
-            IUsingPromise<TNew> IUsingPromise<TResult>.Using<TNew>(Func<TResult, TNew> func) => new UsingPromise<TNew>(func, this);
+            IUsingQuotation<TNew> IUsingQuotation<TResult>.Using<TNew>(Func<TResult, TNew> func) => new UsingQuotation<TNew>(func, this);
 
-            TResult IUsingPromise<TResult>.Return() => (TResult)Return();
+            TResult IUsingQuotation<TResult>.Return() => (TResult)Return();
         }
 
-        private class TopUsingPromise<TResult> : UsingPromise<TResult>
+        private class TopUsingQuotation<TResult> : UsingQuotation<TResult>
         {
-            public TopUsingPromise(Delegate evaluater, object arguement) : base(evaluater, null) => Argument = arguement;
+            public TopUsingQuotation(Delegate evaluater, object arguement) : base(evaluater, null) => Argument = arguement;
             protected override object Argument { get; }
         }
     }
