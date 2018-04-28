@@ -42,7 +42,7 @@ namespace Alsein.Utilities
 
         public static TResult Return<TSource, TResult>(this IUsingQuotation<TSource> source, Func<TSource, TResult> func) => source.Using(func).Return();
 
-        public static IEnumerable<int> To(this int from, int to) => Enumerable.Range(from, to);
+        public static IEnumerable<int> To(this int from, int to) => Enumerable.Range(from, to - from);
 
         public static TSource To<TSource>(this TSource source, Action<TSource> action)
         {
