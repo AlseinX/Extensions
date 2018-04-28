@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using Alsein.Utilities;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Alsein.Utilities.Test
 {
@@ -18,5 +19,12 @@ namespace Alsein.Utilities.Test
             .Using(stream => new StreamReader(stream))
             .Return(reader => reader.ReadLine()), result
         );
+
+        [Theory]
+        [InlineData(1, 5, new[] { 1, 2, 3, 4 })]
+        public void ToTest(int form, int to, IEnumerable<int> result)
+        {
+            Assert.Equal(result, form.To(to));
+        }
     }
 }
