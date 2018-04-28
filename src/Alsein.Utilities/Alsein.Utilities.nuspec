@@ -14,6 +14,10 @@
         <licenseUrl>https://github.com/Cynerus/Alsein.Utilities/blob/master/LICENSE</licenseUrl>
         <iconUrl>https://raw.githubusercontent.com/Cynerus/Alsein.Utilities/master/Alsein.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <dependencies>
+            <group targetFramework="netstandard2.0"></group>
+            <group targetFramework="net45"></group>
+        </dependencies>
         <copyright>Copyright &#x00A9; Alsein.  All rights reserved.</copyright>
         <!-- ... -->
     </metadata>
