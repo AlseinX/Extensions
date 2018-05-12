@@ -6,6 +6,6 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <NuspecFile>Alsein.Utilities.nuspec</NuspecFile>
-    <AssemblyVersion>0.1.3</AssemblyVersion>
+    <AssemblyVersion>0.1.4</AssemblyVersion>
   </PropertyGroup>
 </Project>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package 
+<package
     xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <!-- Required elements-->
         <id>Alsein.Utilities</id>
-        <version>0.1.3</version>
+        <version>0.1.4</version>
         <description>Some commonly used basic utilities for .NET programming.</description>
         <authors>Alsein</authors>
         <!-- Optional elements -->
@@ -15,8 +15,8 @@
         <iconUrl>https://raw.githubusercontent.com/Cynerus/Alsein.Utilities/master/Alsein.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <dependencies>
-            <group targetFramework="netstandard2.0"></group>
-            <group targetFramework="net45"></group>
+            <group targetFramework="netstandard2.0"/>
+            <group targetFramework="net45"/>
         </dependencies>
         <copyright>Copyright &#x00A9; Alsein.  All rights reserved.</copyright>
         <!-- ... -->
