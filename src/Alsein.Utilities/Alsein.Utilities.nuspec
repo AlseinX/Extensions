@@ -4,15 +4,15 @@
     <metadata>
         <!-- Required elements-->
         <id>Alsein.Utilities</id>
-        <version>0.1.4</version>
+        <version>0.1.5</version>
         <description>Some commonly used basic utilities for .NET programming.</description>
         <authors>Alsein</authors>
         <!-- Optional elements -->
         <title>Alsein's .NET Programming Utilities</title>
         <owners>Alsein</owners>
-        <projectUrl>https://github.com/Cynerus/Alsein.Utilities</projectUrl>
-        <licenseUrl>https://github.com/Cynerus/Alsein.Utilities/blob/master/LICENSE</licenseUrl>
-        <iconUrl>https://raw.githubusercontent.com/Cynerus/Alsein.Utilities/master/Alsein.png</iconUrl>
+        <projectUrl>https://github.com/AlseinX/Alsein.Utilities</projectUrl>
+        <licenseUrl>https://github.com/AlseinX/Alsein.Utilities/blob/master/LICENSE</licenseUrl>
+        <iconUrl>https://raw.githubusercontent.com/AlseinX/Alsein.Utilities/master/Alsein.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="netstandard2.0"/>
