@@ -19,6 +19,14 @@ namespace Alsein.Utilities
 
         public static string Join<TResult>(this IEnumerable<TResult> source, string separator) => string.Join(separator, source);
 
+        public static IEnumerable<TResult> Plural<TResult>(this TResult source, int times = 1)
+        {
+            for (var i = 0; i < times; i++)
+            {
+                yield return source;
+            }
+        }
+
         public static IEnumerable<TSource> Recurse<TSource>(this TSource source, Func<TSource, TSource> recurser)
         {
             while (source != null)

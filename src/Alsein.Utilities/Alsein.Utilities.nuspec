@@ -4,7 +4,7 @@
     <metadata>
         <!-- Required elements-->
         <id>Alsein.Utilities</id>
-        <version>0.1.5</version>
+        <version>0.1.6</version>
         <description>Some commonly used basic utilities for .NET programming.</description>
         <authors>Alsein</authors>
         <!-- Optional elements -->
@@ -22,8 +22,10 @@
         <!-- ... -->
     </metadata>
     <files>
-        <file src="bin\Release\netstandard2.0\Alsein.Utilities.*" target="lib\netstandard2.0" />
-        <file src="bin\Release\net45\Alsein.Utilities.*" target="lib\net45" />
+        <file src="bin\Release\netstandard2.0\Alsein.Utilities.dll" target="lib\netstandard2.0" />
+        <file src="bin\Release\netstandard2.0\Alsein.Utilities.*.dll" target="lib\netstandard2.0" />
+        <file src="bin\Release\net45\Alsein.Utilities.dll" target="lib\net45" />
+        <file src="bin\Release\net45\Alsein.Utilities.*.dll" target="lib\net45" />
     </files>
     <!-- Optional 'files' node -->
 </package>
