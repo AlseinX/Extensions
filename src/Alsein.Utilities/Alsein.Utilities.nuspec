@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <!-- Required elements-->
-        <id>Alsein.Utilities</id>
-        <version>0.1.6</version>
+        <id>$id$</id>
+        <version>$version$</version>
         <description>Some commonly used basic utilities for .NET programming.</description>
         <authors>Alsein</authors>
         <!-- Optional elements -->
@@ -15,8 +15,11 @@
         <iconUrl>https://raw.githubusercontent.com/AlseinX/Alsein.Utilities/master/Alsein.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <dependencies>
-            <group targetFramework="netstandard2.0"/>
-            <group targetFramework="net45"/>
+            <group targetFramework="netstandard2.0">
+            </group>
+            <group targetFramework="net45">
+                <dependency id="System.ValueTuple" version="4.5.0"/>
+            </group>
         </dependencies>
         <copyright>Copyright &#x00A9; Alsein.  All rights reserved.</copyright>
         <!-- ... -->

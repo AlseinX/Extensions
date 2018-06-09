@@ -1,0 +1,20 @@
+<Project>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <Version>0.2.0</Version>
+        <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Authors>Alsein</Authors>
+        <Copyright>Copyright &#x00A9; Alsein.  All rights reserved.</Copyright>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseUrl>https://github.com/AlseinX/Alsein.Utilities/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/AlseinX/Alsein.Utilities</PackageProjectUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/AlseinX/Alsein.Utilities/master/Alsein.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/AlseinX/Alsein.Utilities.git</RepositoryUrl>
+        <MinClientVersion>3.4</MinClientVersion>
+    </PropertyGroup>
+</Project>

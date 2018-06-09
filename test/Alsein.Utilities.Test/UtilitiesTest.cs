@@ -3,6 +3,8 @@ using Xunit;
 using Alsein.Utilities;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Alsein.Utilities.Test
 {
@@ -30,6 +32,13 @@ namespace Alsein.Utilities.Test
         public void ToTest(int form, int to, int step, IEnumerable<int> result)
         {
             Assert.Equal(result, form.To(to, step));
+        }
+
+        [Fact]
+        public void AssemblyTest()
+        {
+            var e = AssemblyLoader.LoadAssemblies(Assembly.GetExecutingAssembly(), true)
+                .Where(AssemblyLoader.IsSharingRootName[Assembly.GetExecutingAssembly()]).ToArray();
         }
     }
 }
