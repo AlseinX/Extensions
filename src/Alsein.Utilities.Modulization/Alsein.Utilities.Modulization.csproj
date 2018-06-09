@@ -1,10 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="../../Alsein.Utilities.props" />
+
   <PropertyGroup>
     <Title>Alsein's Module Management Utilities</Title>
     <Description>Some conviniences for module management.</Description>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
   </ItemGroup>
+
 </Project>

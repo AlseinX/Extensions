@@ -1,12 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\Alsein.Utilities.props" />
+
   <PropertyGroup>
     <Title>Alsein's .NET Programming Utilities</Title>
     <Description>Some commonly used basic utilities for .NET programming.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj"/>
     <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj"/>
   </ItemGroup>
+
 </Project>
