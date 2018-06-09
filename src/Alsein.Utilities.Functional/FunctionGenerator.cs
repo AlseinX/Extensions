@@ -2,14 +2,14 @@ using System;
 
 namespace Alsein.Utilities
 {
-    public abstract class FunctionGenerator<TFunc>
+    public abstract class FunctionGenerator<TFunc> where TFunc : Delegate
     {
         public abstract TFunc Default { get; }
 
         public static implicit operator TFunc(FunctionGenerator<TFunc> value) => value.Default;
     }
 
-    public sealed class FunctionGenerator<T, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T, TFunc> _generator;
 
@@ -26,7 +26,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValue);
     }
 
-    public sealed class FunctionGenerator<T1, T2, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, TFunc> _generator;
 
@@ -43,7 +43,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValues.Item1, _defaultValues.Item2);
     }
 
-    public sealed class FunctionGenerator<T1, T2, T3, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, T3, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, T3, TFunc> _generator;
 
@@ -60,7 +60,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValues.Item1, _defaultValues.Item2, _defaultValues.Item3);
     }
 
-    public sealed class FunctionGenerator<T1, T2, T3, T4, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, T3, T4, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, T3, T4, TFunc> _generator;
 
@@ -77,7 +77,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValues.Item1, _defaultValues.Item2, _defaultValues.Item3, _defaultValues.Item4);
     }
 
-    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, T3, T4, T5, TFunc> _generator;
 
@@ -94,7 +94,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValues.Item1, _defaultValues.Item2, _defaultValues.Item3, _defaultValues.Item4, _defaultValues.Item5);
     }
 
-    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, T6, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, T6, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, T3, T4, T5, T6, TFunc> _generator;
 
@@ -111,7 +111,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValues.Item1, _defaultValues.Item2, _defaultValues.Item3, _defaultValues.Item4, _defaultValues.Item5, _defaultValues.Item6);
     }
 
-    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, T6, T7, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, T6, T7, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, T3, T4, T5, T6, T7, TFunc> _generator;
 
@@ -128,7 +128,7 @@ namespace Alsein.Utilities
         public override TFunc Default => _generator(_defaultValues.Item1, _defaultValues.Item2, _defaultValues.Item3, _defaultValues.Item4, _defaultValues.Item5, _defaultValues.Item6, _defaultValues.Item7);
     }
 
-    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, T6, T7, T8, TFunc> : FunctionGenerator<TFunc>
+    public sealed class FunctionGenerator<T1, T2, T3, T4, T5, T6, T7, T8, TFunc> : FunctionGenerator<TFunc> where TFunc : Delegate
     {
         private Func<T1, T2, T3, T4, T5, T6, T7, T8, TFunc> _generator;
 
