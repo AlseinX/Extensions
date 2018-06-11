@@ -10,6 +10,9 @@ using System.Linq.Expressions;
 using System.Reflection.Emit;
 using System.Collections;
 using System.Threading.Tasks;
+using Alsein.Utilities.Runtime;
+using Autofac;
+using Alsein.Utilities.LifetimeAnnotations;
 
 namespace Alsein.Utilities.Test
 {
@@ -44,6 +47,22 @@ namespace Alsein.Utilities.Test
         {
             var e = AssemblyLoader.LoadAssemblies(Assembly.GetExecutingAssembly(), true)
                 .Where(AssemblyLoader.IsSharingRootName[Assembly.GetExecutingAssembly()]).ToArray();
+        }
+
+        public interface ITest
+        {
+            void Out(Action<int> action);
+            ITest Mul(int value);
+        }
+        public class Test : ITest
+        {
+            private int _value;
+
+            public Test(int value) => _value = value;
+
+            public ITest Mul(int value) => new Test(_value * value);
+
+            public void Out(Action<int> action) => action(_value);
         }
     }
 }

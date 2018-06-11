@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Alsein.Utilities\Alsein.Utilities.csproj" />
+    <ProjectReference Include="..\..\src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj" />
+    <ProjectReference Include="..\..\src\Alsein.Utilities.Modulization.Autofac\Alsein.Utilities.Modulization.Autofac.csproj" />
   </ItemGroup>
 
 </Project>

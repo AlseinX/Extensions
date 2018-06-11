@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj" />
   </ItemGroup>
 
   <ItemGroup>

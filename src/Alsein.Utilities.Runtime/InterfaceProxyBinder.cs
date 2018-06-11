@@ -6,7 +6,7 @@ using System.Reflection.Emit;
 
 namespace Alsein.Utilities.Runtime
 {
-    internal abstract class InterfaceProxyBinder : IProxyBinder, IDynamicInvocable
+    internal class InterfaceProxyBinder : IProxyBinder, IDynamicInvocable
     {
 
         private protected static IDictionary<Type, Type> Implements { get; } = new Dictionary<Type, Type>();
@@ -17,10 +17,12 @@ namespace Alsein.Utilities.Runtime
 
         private protected readonly MethodInfo[] _methods;
 
-        public abstract Type Target { get; }
+        public Type Target { get; }
 
-        internal InterfaceProxyBinder(IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
+        internal InterfaceProxyBinder(Type target, IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
         {
+            Target = target;
+
             if (!Target.IsInterface)
             {
                 throw new InvalidOperationException("The target type must be an interface.");
@@ -45,6 +47,8 @@ namespace Alsein.Utilities.Runtime
                 Implements.Add(Target, _implement = BuildType());
             }
         }
+
+        public object GetProxy() => Activator.CreateInstance(_implement, this);
 
         public object DispatchInvocation(int methodId, Type[] genericArgs, object[] valueArgs)
         {

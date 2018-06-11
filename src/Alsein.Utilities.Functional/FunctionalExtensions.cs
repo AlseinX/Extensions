@@ -76,5 +76,13 @@ namespace Alsein.Utilities
         public static IUsingQuotation<TResult> Using<TSource, TResult>(this TSource source, Func<TResult> func) => new TopUsingQuotation<TResult>(new Func<TSource, TResult>(x => func()), source);
 
         public static IUsingQuotation<TResult> Using<TSource, TResult>(this TSource source, Func<TSource, TResult> func) => new TopUsingQuotation<TResult>(func, source);
+
+        public static TSource With<TSource>(this TSource source, Action<TSource> action)
+        {
+            action(source);
+            return source;
+        }
+
+        public static IEnumerable<TSource> WithAll<TSource>(this IEnumerable<TSource> source, Action<TSource> action) => source.Select(item => item.With(action));
     }
 }
