@@ -19,6 +19,7 @@
         <PackageIconUrl>https://raw.githubusercontent.com/$(GitRepository)/master/Alsein.png</PackageIconUrl>
         <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
         <MinClientVersion>3.4</MinClientVersion>
+        <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
     </PropertyGroup>
 
 </Project>
