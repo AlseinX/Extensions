@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Modulizati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Modulization.Autofac", "src\Alsein.Utilities.Modulization.Autofac\Alsein.Utilities.Modulization.Autofac.csproj", "{0B14F6EB-2454-406F-958B-99DF968F4105}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Runtime", "src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj", "{724D9B48-6C43-4E59-9243-139CA6740AB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,18 @@ Global
 		{0B14F6EB-2454-406F-958B-99DF968F4105}.Release|x64.Build.0 = Release|Any CPU
 		{0B14F6EB-2454-406F-958B-99DF968F4105}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B14F6EB-2454-406F-958B-99DF968F4105}.Release|x86.Build.0 = Release|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Debug|x64.Build.0 = Debug|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Debug|x86.Build.0 = Debug|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Release|x64.ActiveCfg = Release|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Release|x64.Build.0 = Release|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Release|x86.ActiveCfg = Release|Any CPU
+		{724D9B48-6C43-4E59-9243-139CA6740AB6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02FC453E-0F0D-4FAC-B46E-229181A7468F} = {DED574E0-A492-4349-93E0-15D1E5105B40}
@@ -97,5 +111,6 @@ Global
 		{F0976E5C-9408-4C01-B913-37BC836588FA} = {7F099E2F-EE59-491D-83F2-0D5F4F2ED88B}
 		{9E348F30-D973-40DE-B905-DE4690416DF3} = {7F099E2F-EE59-491D-83F2-0D5F4F2ED88B}
 		{0B14F6EB-2454-406F-958B-99DF968F4105} = {7F099E2F-EE59-491D-83F2-0D5F4F2ED88B}
+		{724D9B48-6C43-4E59-9243-139CA6740AB6} = {7F099E2F-EE59-491D-83F2-0D5F4F2ED88B}
 	EndGlobalSection
 EndGlobal

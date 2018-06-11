@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj"/>
-    <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj"/>
+    <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj" />
   </ItemGroup>
 
 </Project>
