@@ -3,6 +3,7 @@
   <Import Project="../../Alsein.Utilities.props" />
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <Title>Alsein's Runtime Binding Utilities</Title>
     <Description>Some conviniences for runtime binding.</Description>
   </PropertyGroup>
