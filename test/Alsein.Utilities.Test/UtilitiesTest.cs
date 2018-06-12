@@ -1,18 +1,10 @@
+using Autofac;
 using System;
-using Xunit;
-using Alsein.Utilities;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Dynamic;
-using System.Linq.Expressions;
-using System.Reflection.Emit;
-using System.Collections;
-using System.Threading.Tasks;
-using Alsein.Utilities.Runtime;
-using Autofac;
-using Alsein.Utilities.LifetimeAnnotations;
+using Xunit;
 
 namespace Alsein.Utilities.Test
 {

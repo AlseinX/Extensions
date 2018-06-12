@@ -2,8 +2,17 @@ using System;
 
 namespace Alsein.Utilities
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Utils
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public static TResult EvaluateOrDefault<TResult>(this Func<TResult> func)
         {
             try
@@ -12,7 +21,7 @@ namespace Alsein.Utilities
             }
             catch
             {
-                return default(TResult);
+                return default;
             }
         }
     }

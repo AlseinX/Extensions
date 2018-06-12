@@ -1,20 +1,45 @@
+using Autofac;
 using System;
 using System.Linq;
 using System.Reflection;
-using Alsein.Utilities.Runtime;
-using Autofac;
-using Autofac.Builder;
-using Autofac.Features.Scanning;
+using RegistrationBuilder =
+    Autofac.Builder.IRegistrationBuilder<
+        System.Object,
+        Autofac.Features.Scanning.ScanningActivatorData,
+        Autofac.Builder.DynamicRegistrationStyle
+    >;
 
 namespace Alsein.Utilities
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class AutofacExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public const string ServiceSuffix = "Service";
 
+        /// <summary>
+        /// 
+        /// </summary>
         public const string ControllerSuffix = "Controller";
 
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle> RegisterAll(this ContainerBuilder builder, Func<Type, bool> filter = null, Assembly entry = null, bool recursive = false)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="filter"></param>
+        /// <param name="config"></param>
+        /// <param name="entry"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
+        public static ContainerBuilder RegisterAll(this ContainerBuilder builder,
+            Func<Type, bool> filter = null,
+            Action<RegistrationBuilder> config = null,
+            Assembly entry = null,
+            bool recursive = false)
         {
             entry = entry ?? Assembly.GetEntryAssembly();
             var types = AssemblyLoader.LoadAssemblies(entry, recursive)
@@ -22,22 +47,58 @@ namespace Alsein.Utilities
                 .SelectMany(t => t.DefinedTypes).ToArray()
                 .Where(filter ?? (t => true))
                 .ToArray();
-            IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle> register() => builder.RegisterTypes(types)
+            RegistrationBuilder register() => builder.RegisterTypes(types)
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .PropertiesAutowired();
-            return Proxy.CreateMulticastProxy(new[]{
-                register().Where(IoCExtensions.IsSingletonService).SingleInstance(),
-                register().Where(IoCExtensions.IsScopedService).InstancePerLifetimeScope(),
-                register().Where(t => !t.IsSingletonService() && !t.IsScopedService()).InstancePerDependency()
-            });
+            config = config ?? (x => { });
+            config(register().Where(IoCExtensions.IsSingletonService).SingleInstance());
+            config(register().Where(IoCExtensions.IsScopedService).InstancePerLifetimeScope());
+            config(register().Where(t => !t.IsSingletonService() && !t.IsScopedService()).InstancePerDependency());
+            return builder;
         }
 
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle> RegisterAll(this ContainerBuilder builder, string suffix, Assembly entry = null, bool recursive = false) =>
-            builder.RegisterAll(t => t.Name.EndsWith(suffix), entry, recursive);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="suffix"></param>
+        /// <param name="config"></param>
+        /// <param name="entry"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
+        public static ContainerBuilder RegisterAll(this ContainerBuilder builder, string suffix,
+            Action<RegistrationBuilder> config = null,
+            Assembly entry = null,
+            bool recursive = false)
+            => builder.RegisterAll(t => t.Name.EndsWith(suffix), config, entry, recursive);
 
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle> RegisterAllServices(this ContainerBuilder builder, Assembly entry = null, bool recursive = false) => builder.RegisterAll(ServiceSuffix, entry, recursive);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="config"></param>
+        /// <param name="entry"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
+        public static ContainerBuilder RegisterAllServices(this ContainerBuilder builder,
+            Action<RegistrationBuilder> config = null,
+            Assembly entry = null,
+            bool recursive = false)
+            => builder.RegisterAll(ServiceSuffix, config, entry, recursive);
 
-        public static IRegistrationBuilder<object, ScanningActivatorData, DynamicRegistrationStyle> RegisterAllControllers(this ContainerBuilder builder, Assembly entry = null, bool recursive = false) => builder.RegisterAll(ControllerSuffix, entry, recursive);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="config"></param>
+        /// <param name="entry"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
+        public static ContainerBuilder RegisterAllControllers(this ContainerBuilder builder,
+            Action<RegistrationBuilder> config = null,
+            Assembly entry = null,
+            bool recursive = false)
+            => builder.RegisterAll(ControllerSuffix, config, entry, recursive);
     }
 }

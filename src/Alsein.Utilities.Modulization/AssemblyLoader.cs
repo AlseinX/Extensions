@@ -7,13 +7,25 @@ using System.Reflection;
 namespace Alsein.Utilities
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class AssemblyLoader
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static FunctionGenerator<Assembly, Func<Assembly, bool>> IsSharingRootName { get; } = new FunctionGenerator<Assembly, Func<Assembly, bool>>(
             entry => assembly => assembly.FullName.StartsWith(entry.FullName.Split(',')[0].Split('.')[0]),
             Assembly.GetEntryAssembly()
         );
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
         public static IEnumerable<Assembly> LoadAssemblies(Assembly entry = null, bool recursive = false)
         {
             Directory.EnumerateFiles(Path.GetDirectoryName(
@@ -25,7 +37,11 @@ namespace Alsein.Utilities
             return AppDomain.CurrentDomain.GetAssemblies();
         }
 
-        //Reference https://stackoverflow.com/a/15608028/8675026
+        /// <summary>
+        /// <see href="https://stackoverflow.com/a/15608028/8675026">Reference: https://stackoverflow.com/a/15608028/8675026</see>
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public static bool IsManagedAssembly(string fileName)
         {
             using (Stream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
