@@ -140,6 +140,15 @@ namespace Alsein.Utilities
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
+        /// <param name="dest"></param>
+        /// <returns></returns>
+        public static TSource To<TSource>(this TSource source, out TSource dest) => dest = source;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
         /// <param name="action"></param>
         /// <returns></returns>
         public static TSource To<TSource>(this TSource source, Action<TSource> action)
