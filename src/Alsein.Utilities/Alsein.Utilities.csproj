@@ -1,18 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\Alsein.Utilities.props" />
+  <Import Project="../../Alsein.Utilities.props" />
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <Title>Alsein's .NET Programming Utilities</Title>
-    <Description>Some commonly used basic utilities for .NET programming.</Description>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <Description>A fundamental class library by Alsein.</Description>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
-    <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj" />
-    <ProjectReference Include="..\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

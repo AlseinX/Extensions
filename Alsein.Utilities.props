@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <VersionPrefix>0.2.2</VersionPrefix>
-        <VersionSuffix>beta</VersionSuffix>
+        <VersionPrefix>0.3.0</VersionPrefix>
+        <VersionSuffix/>
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <RootNamespace>Alsein.Utilities</RootNamespace>

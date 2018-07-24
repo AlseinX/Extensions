@@ -4,12 +4,12 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Title>Alsein's Module Management Utilities</Title>
-    <Description>Some conviniences for module management.</Description>
+    <Title>Alsein's Configuration Conviniences for Autofac</Title>
+    <Description>Some injection conviniences on Autofac integration.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities\Alsein.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
