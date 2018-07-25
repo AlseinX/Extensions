@@ -1,4 +1,4 @@
-namespace Alsein.Utilities
+namespace Alsein.Utilities.IO
 {
     /// <summary>
     /// 

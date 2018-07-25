@@ -1,9 +1,11 @@
-namespace Alsein.Utilities
+using System.Threading.Tasks;
+
+namespace Alsein.Utilities.IO
 {
     /// <summary>
     /// 
     /// </summary>
-    public class AsyncDataEndPoint
+    public static class AsyncDataEndPoint
     {
         /// <summary>
         /// 
@@ -18,5 +20,24 @@ namespace Alsein.Utilities
         /// 
         /// </summary>
         public static (IAsyncDataSender, IAsyncDataReceiver) CreateSimplex() => AsyncDataChannel.Create();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="endPoint"></param>
+        /// <returns></returns>
+        public static Task<ITryResult<object>> ReceiveAsync(this IAsyncDataEndPoint endPoint) => endPoint.ReceiveAsync<object>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="endPoint"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static async Task<ITryResult<TData>> RequestAsync<TData>(this IAsyncDataEndPoint endPoint, object data)
+        {
+            await endPoint.SendAsync(data);
+            return await endPoint.ReceiveAsync<TData>();
+        }
     }
 }

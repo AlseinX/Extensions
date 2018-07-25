@@ -1,3 +1,5 @@
+using Alsein.Utilities.IO;
+using Alsein.Utilities.Modulization;
 using Autofac;
 using System;
 using System.Collections.Generic;
@@ -68,6 +70,5 @@ namespace Alsein.Utilities.Test
             Task.WaitAll(task1, task2);
             return;
         }
-
     }
 }

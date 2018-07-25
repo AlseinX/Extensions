@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Alsein.Utilities
+namespace Alsein.Utilities.IO
 {
     /// <summary>
     /// 
