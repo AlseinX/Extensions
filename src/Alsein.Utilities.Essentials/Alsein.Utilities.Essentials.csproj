@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities\Alsein.Utilities.csproj" />
     <ProjectReference Include="..\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.IO\Alsein.Utilities.IO.csproj" />
   </ItemGroup>
 
 </Project>
