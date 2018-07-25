@@ -48,6 +48,36 @@ namespace Alsein.Utilities
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="source"></param>
+        /// <param name="random"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> Mess<TSource>(this IEnumerable<TSource> source, Random random = null)
+        {
+            var arr = source.ToArray();
+            var pickeds = false.Plural(arr.Length).ToArray();
+            var num = arr.Length;
+            random = random ?? new Random();
+            while (num > 0)
+            {
+                var r = random.Next(num);
+                var index = r;
+                for (var i = 0; i <= index; i++)
+                {
+                    while (pickeds[i])
+                    {
+                        index++;
+                        i++;
+                    }
+                }
+                pickeds[index] = true;
+                yield return arr[index];
+                num--;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="source"></param>
         /// <param name="times"></param>

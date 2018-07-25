@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Alsein.Utilities.Test
@@ -41,20 +42,32 @@ namespace Alsein.Utilities.Test
                 .Where(AssemblyLoader.IsSharingRootName[Assembly.GetExecutingAssembly()]).ToArray();
         }
 
-        public interface ITest
+        [Fact]
+        public void IOTest()
         {
-            void Out(Action<int> action);
-            ITest Mul(int value);
+            var (endPoint1, endPoint2) = AsyncDataEndPoint.CreateDuplex();
+            var record = new List<string>();
+            endPoint1.Receive += async (value) => await Task.Run(() => record.Add("ep1 event receiped: " + value));
+            endPoint2.Receive += async (value) => await Task.Run(() => record.Add("ep2 event receiped: " + value));
+            async Task fun1()
+            {
+                record.Add("sending a via ep1");
+                await endPoint1.SendAsync("a");
+                await Task.Delay(500);
+                record.Add("ep1 received: " + (await endPoint1.ReceiveAsync<string>()).Result);
+            }
+            async Task fun2()
+            {
+                record.Add("sending x via ep2");
+                await endPoint2.SendAsync("b");
+                await Task.Delay(100);
+                record.Add("ep2 received: " + (await endPoint2.ReceiveAsync<string>()).Result);
+            }
+            var task1 = fun1();
+            var task2 = fun2();
+            Task.WaitAll(task1, task2);
+            return;
         }
-        public class Test : ITest
-        {
-            private int _value;
 
-            public Test(int value) => _value = value;
-
-            public ITest Mul(int value) => new Test(_value * value);
-
-            public void Out(Action<int> action) => action(_value);
-        }
     }
 }
