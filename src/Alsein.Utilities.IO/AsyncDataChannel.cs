@@ -40,8 +40,8 @@ namespace Alsein.Utilities.IO
                     throw new ChannelDisposedException();
                 }
                 var args = new ReceiveEventArgs(data);
-                var invocations = _channel.Receive.GetInvocationList();
-                if (invocations.Any())
+                var invocations = _channel.Receive?.GetInvocationList();
+                if (invocations?.Any() ?? false)
                 {
                     foreach (Func<ReceiveEventArgs, Task> invocation in invocations)
                     {
