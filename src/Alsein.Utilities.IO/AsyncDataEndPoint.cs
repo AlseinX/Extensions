@@ -34,7 +34,7 @@ namespace Alsein.Utilities.IO
         /// <param name="endPoint"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static async Task<TData>> RequestAsync<TData>(this IAsyncDataEndPoint endPoint, object data)
+        public static async Task<TData> RequestAsync<TData>(this IAsyncDataEndPoint endPoint, object data)
         {
             await endPoint.SendAsync(data);
             return await endPoint.ReceiveAsync<TData>();

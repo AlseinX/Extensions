@@ -56,14 +56,14 @@ namespace Alsein.Utilities.Test
                 record.Add("sending a via ep1");
                 await endPoint1.SendAsync("a");
                 await Task.Delay(500);
-                record.Add("ep1 received: " + (await endPoint1.ReceiveAsync<string>()).Result);
+                record.Add("ep1 received: " + await endPoint1.ReceiveAsync<string>());
             }
             async Task fun2()
             {
                 record.Add("sending x via ep2");
                 await endPoint2.SendAsync("b");
                 await Task.Delay(100);
-                record.Add("ep2 received: " + (await endPoint2.ReceiveAsync<string>()).Result);
+                record.Add("ep2 received: " + await endPoint2.ReceiveAsync<string>());
             }
             var task1 = fun1();
             var task2 = fun2();
