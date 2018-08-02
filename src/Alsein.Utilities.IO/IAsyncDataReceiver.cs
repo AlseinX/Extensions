@@ -12,11 +12,11 @@ namespace Alsein.Utilities.IO
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<ITryResult<TData>> ReceiveAsync<TData>();
+        Task<TData> ReceiveAsync<TData>();
 
         /// <summary>
         /// 
         /// </summary>
-        event Func<object, Task> Receive;
+        event Func<ReceiveEventArgs, Task> Receive;
     }
 }

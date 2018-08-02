@@ -16,7 +16,7 @@ namespace Alsein.Utilities.IO
 
         public bool IsDisposed => _receiver.IsDisposed;
 
-        public event Func<object, Task> Receive
+        public event Func<ReceiveEventArgs, Task> Receive
         {
             add => _receiver.Receive += value;
             remove => _receiver.Receive -= value;
@@ -24,7 +24,7 @@ namespace Alsein.Utilities.IO
 
         public void Dispose() => _receiver.Dispose();
 
-        public Task<ITryResult<TData>> ReceiveAsync<TData>() => _receiver.ReceiveAsync<TData>();
+        public Task<TData> ReceiveAsync<TData>() => _receiver.ReceiveAsync<TData>();
 
         public Task SendAsync<TData>(TData data) => _sender.SendAsync(data);
     }

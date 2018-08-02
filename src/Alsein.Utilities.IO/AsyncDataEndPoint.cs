@@ -26,7 +26,7 @@ namespace Alsein.Utilities.IO
         /// </summary>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-        public static Task<ITryResult<object>> ReceiveAsync(this IAsyncDataEndPoint endPoint) => endPoint.ReceiveAsync<object>();
+        public static Task<object> ReceiveAsync(this IAsyncDataEndPoint endPoint) => endPoint.ReceiveAsync<object>();
 
         /// <summary>
         /// 
@@ -34,7 +34,7 @@ namespace Alsein.Utilities.IO
         /// <param name="endPoint"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static async Task<ITryResult<TData>> RequestAsync<TData>(this IAsyncDataEndPoint endPoint, object data)
+        public static async Task<TData>> RequestAsync<TData>(this IAsyncDataEndPoint endPoint, object data)
         {
             await endPoint.SendAsync(data);
             return await endPoint.ReceiveAsync<TData>();

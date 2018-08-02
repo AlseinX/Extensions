@@ -33,7 +33,7 @@ namespace Alsein.Utilities.Modulization
                 "*.dll",
                 recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
                 ).Where(IsManagedAssembly)
-                .ForAll(Assembly.LoadFrom);
+                .ForAll(Assembly.LoadFrom, MassiveExecutionFlags.IgnoreExceptions);
             return AppDomain.CurrentDomain.GetAssemblies();
         }
 

@@ -21,7 +21,7 @@ namespace Alsein.Utilities.IO
             _quotes = new ConcurrentQueue<TaskCompletionSource<TryResult<object>>>();
         }
 
-        private event Func<object, Task> Receive;
+        private event Func<ReceiveEventArgs, Task> Receive;
 
         private class Sender : IAsyncDataSender
         {
@@ -39,9 +39,22 @@ namespace Alsein.Utilities.IO
                 {
                     throw new ChannelDisposedException();
                 }
-                if (_channel.Receive != null)
+                var args = new ReceiveEventArgs(data);
+                var invocations = _channel.Receive.GetInvocationList();
+                if (invocations.Any())
                 {
-                    await Task.WhenAll(_channel.Receive.GetInvocationList().Select(de => (de as Func<object, Task>)(data)));
+                    foreach (Func<ReceiveEventArgs, Task> invocation in invocations)
+                    {
+                        await invocation(args);
+                        if (args.IsMonopolied)
+                        {
+                            break;
+                        }
+                    }
+                    if (!args.IsAsyncReceived)
+                    {
+                        return;
+                    }
                 }
                 var (hasQuote, value) = (false, default(TaskCompletionSource<TryResult<object>>));
                 lock (_channel)
@@ -78,7 +91,7 @@ namespace Alsein.Utilities.IO
 
             public bool IsDisposed => _channel.IsDisposed;
 
-            public event Func<object, Task> Receive
+            public event Func<ReceiveEventArgs, Task> Receive
             {
                 add => _channel.Receive += value;
                 remove => _channel.Receive -= value;
@@ -86,7 +99,7 @@ namespace Alsein.Utilities.IO
 
             public void Dispose() => _channel.Dispose();
 
-            public async Task<ITryResult<TData>> ReceiveAsync<TData>()
+            public async Task<TData> ReceiveAsync<TData>()
             {
                 var (hasStock, value) = (false, default(object));
                 lock (_channel)
@@ -99,7 +112,7 @@ namespace Alsein.Utilities.IO
                 }
                 if (hasStock)
                 {
-                    return new TryResult<TData>(true, (TData)value);
+                    return (TData)value;
                 }
                 else
                 {
@@ -108,12 +121,12 @@ namespace Alsein.Utilities.IO
                     {
                         if (_channel.IsDisposed)
                         {
-                            return new TryResult<TData>(false, default);
+                            throw new ChannelDisposedException();
                         }
                         _channel._quotes.Enqueue(completion);
                     }
                     var result = await completion.Task;
-                    return result.Cast<TData>();
+                    return (TData)result.Result;
                 }
             }
         }

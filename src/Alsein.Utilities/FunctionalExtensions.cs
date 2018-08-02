@@ -15,12 +15,25 @@ namespace Alsein.Utilities
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values to invoke a transform function on.</param>
         /// <param name="action">A transform function to apply to each element.</param>
+        /// <param name="massiveExecutionFlags"></param>
         /// <returns>The original <paramref name="source"/>.</returns>
-        public static IEnumerable<TSource> ForAll<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+        public static IEnumerable<TSource> ForAll<TSource>(this IEnumerable<TSource> source, Action<TSource> action, MassiveExecutionFlags massiveExecutionFlags = MassiveExecutionFlags.ThrowWhenExceptionOccurs)
         {
+            var exceptions = new List<Exception>();
             foreach (var item in source)
             {
-                action(item);
+                try
+                {
+                    action(item);
+                }
+                catch (Exception ex) when (massiveExecutionFlags != MassiveExecutionFlags.ThrowWhenExceptionOccurs)
+                {
+                    exceptions.Add(ex);
+                }
+            }
+            if (massiveExecutionFlags == MassiveExecutionFlags.ThrowAggregateExceptions && exceptions.Any())
+            {
+                throw new AggregateException(exceptions);
             }
             return source;
         }
@@ -33,8 +46,29 @@ namespace Alsein.Utilities
         /// <typeparam name="TResult">The type of the value returned by <paramref name="func"/>.</typeparam>
         /// <param name="source"></param>
         /// <param name="func"></param>
+        /// <param name="massiveExecutionFlags"></param>
         /// <returns>An System.Collections.Generic.IEnumerable&lt;<typeparamref name="TSource"/>&gt; whose elements are the result of invoking <paramref name="func"/> on each element of <paramref name="source"/>.</returns>
-        public static IEnumerable<TResult> ForAll<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> func) => source.Select(func).ToArray();
+        public static IEnumerable<TResult> ForAll<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> func, MassiveExecutionFlags massiveExecutionFlags = MassiveExecutionFlags.ThrowWhenExceptionOccurs)
+        {
+            var results = new List<TResult>();
+            var exceptions = new List<Exception>();
+            foreach (var item in source)
+            {
+                try
+                {
+                    results.Add(func(item));
+                }
+                catch (Exception ex) when (massiveExecutionFlags != MassiveExecutionFlags.ThrowWhenExceptionOccurs)
+                {
+                    exceptions.Add(ex);
+                }
+            }
+            if (massiveExecutionFlags == MassiveExecutionFlags.ThrowAggregateExceptions && exceptions.Any())
+            {
+                throw new AggregateException(exceptions);
+            }
+            return results.AsEnumerable();
+        }
 
         /// <summary>
         /// 
