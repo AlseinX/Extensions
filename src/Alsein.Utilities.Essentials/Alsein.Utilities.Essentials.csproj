@@ -3,7 +3,7 @@
   <Import Project="..\..\Alsein.Utilities.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <Title>Alsein's .NET Programming Utilities Bundle</Title>
     <Description>An essential bundle for Alsein.Utilities libraries.</Description>
     <IncludeBuildOutput>false</IncludeBuildOutput>

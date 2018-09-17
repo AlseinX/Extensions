@@ -43,8 +43,8 @@ namespace Alsein.Utilities
             bool recursive = false)
         {
             entry = entry ?? Assembly.GetEntryAssembly();
-            var types = AssemblyLoader.LoadAssemblies(entry, recursive)
-                .Where(AssemblyLoader.IsSharingRootName[entry])
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(AssemblyManager.IsSharingRootName[entry])
                 .SelectMany(t => t.DefinedTypes).ToArray()
                 .Where(filter ?? (t => true))
                 .ToArray();

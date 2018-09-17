@@ -16,7 +16,6 @@
     <ProjectReference Include="..\..\src\Alsein.Utilities\Alsein.Utilities.csproj" />
     <ProjectReference Include="..\..\src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj" />
     <ProjectReference Include="..\..\src\Alsein.Utilities.Autofac\Alsein.Utilities.Autofac.csproj" />
-    <ProjectReference Include="..\..\src\Alsein.Utilities.Essentials\Alsein.Utilities.Essentials.csproj" />
     <ProjectReference Include="..\..\src\Alsein.Utilities.IO\Alsein.Utilities.IO.csproj" />
   </ItemGroup>
 

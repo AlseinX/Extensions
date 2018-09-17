@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <VersionPrefix>0.3.2</VersionPrefix>
+        <VersionPrefix>0.3.3</VersionPrefix>
         <VersionSuffix/>
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Options;
 
 namespace Alsein.Utilities.Modulization
 {
@@ -10,8 +11,19 @@ namespace Alsein.Utilities.Modulization
     /// <summary>
     /// 
     /// </summary>
-    public class AssemblyLoader
+    public class AssemblyManager : IAssemblyManager
     {
+        private readonly AssemblyManagerOptions _options;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="options"></param>
+        public AssemblyManager(IOptions<AssemblyManagerOptions> options)
+        {
+            _options = options.Value;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -23,26 +35,23 @@ namespace Alsein.Utilities.Modulization
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="entry"></param>
-        /// <param name="recursive"></param>
         /// <returns></returns>
-        public static IEnumerable<Assembly> LoadAssemblies(Assembly entry = null, bool recursive = false)
-        {
-            Directory.EnumerateFiles(Path.GetDirectoryName(
-                (entry ?? Assembly.GetEntryAssembly()).Location),
-                "*.dll",
-                recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
-                ).Where(IsManagedAssembly)
+        public void LoadAssemblies() =>
+            _options.Directories
+                .SelectMany(dir =>
+                    Directory
+                        .EnumerateFiles(dir.Path, "*.dll", dir.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
+                        .Where(dir.Filter)
+                )
+                .Where(IsManagedAssembly)
                 .ForAll(Assembly.LoadFrom, MassiveExecutionFlags.IgnoreExceptions);
-            return AppDomain.CurrentDomain.GetAssemblies();
-        }
 
         /// <summary>
         /// <see href="https://stackoverflow.com/a/15608028/8675026">Reference: https://stackoverflow.com/a/15608028/8675026</see>
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static bool IsManagedAssembly(string fileName)
+        public bool IsManagedAssembly(string fileName)
         {
             using (Stream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (BinaryReader binaryReader = new BinaryReader(fileStream))

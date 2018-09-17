@@ -1,6 +1,7 @@
 using Alsein.Utilities.IO;
 using Alsein.Utilities.Modulization;
 using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,8 +41,14 @@ namespace Alsein.Utilities.Test
         [Fact]
         public void AssemblyTest()
         {
-            var e = AssemblyLoader.LoadAssemblies(Assembly.GetExecutingAssembly(), true)
-                .Where(AssemblyLoader.IsSharingRootName[Assembly.GetExecutingAssembly()]).ToArray();
+            var asms = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("Alsein")).ToArray();
+            var manager = new AssemblyManagerBuilder().ConfigureDirectories(o =>
+            {
+                o.Clear();
+                o.Add(new AssemblyDirectory("../../../../../src/Alsein.Utilities.Essentials/bin/Debug/netstandard2.0/", false, x => true));
+            }).Build();
+            manager.LoadAssemblies();
+            var asms2 = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("Alsein")).ToArray();
         }
 
         [Fact]
