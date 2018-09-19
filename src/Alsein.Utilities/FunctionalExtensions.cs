@@ -10,6 +10,24 @@ namespace Alsein.Utilities
     public static partial class FunctionalExtensions
     {
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static IEnumerable<TResult> Cross<TSource, TDestination, TResult>(this IEnumerable<TSource> source, IEnumerable<TDestination> destination, Func<TSource, TDestination, TResult> selector)
+        {
+            foreach (var item1 in source)
+            {
+                foreach (var item2 in destination)
+                {
+                    yield return selector(item1, item2);
+                }
+            }
+        }
+
+        /// <summary>
         /// Executes <paramref name="action"/> for each element in <paramref name="source"/> and return the original <paramref name="source"/>.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>

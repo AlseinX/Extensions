@@ -1,4 +1,6 @@
 using System;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Alsein.Utilities
 {
@@ -10,10 +12,13 @@ namespace Alsein.Utilities
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serviceProvider"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
-        public static T GetService<T>(this IServiceProvider serviceProvider) => (T)serviceProvider.GetService(typeof(T));
+        public static bool IsInstantiableClass(this Type type) =>
+            type.IsClass &&
+            !type.IsAbstract &&
+            !type.IsGenericTypeDefinition &&
+            !type.IsNested;
 
         /// <summary>
         /// 
@@ -35,5 +40,21 @@ namespace Alsein.Utilities
         /// <param name="type"></param>
         /// <returns></returns>
         public static bool IsScopedService(this Type type) => type.IsDefined(typeof(LifetimeAnnotations.ScopedAttribute), false);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsNonService(this Type type) => type.IsDefined(typeof(LifetimeAnnotations.NonServiceAttribute), false);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        public static bool IsSharingRootNamespace(this Assembly source, Assembly destination) =>
+            source.FullName.StartsWith(destination.FullName.Split(',')[0].Split('.')[0]);
     }
 }

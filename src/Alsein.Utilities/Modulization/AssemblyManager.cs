@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,22 +23,29 @@ namespace Alsein.Utilities.Modulization
         public AssemblyManager(IOptions<AssemblyManagerOptions> options)
         {
             _options = options.Value;
+            ProjectAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(_options.ProjectAssemblyFilter);
+            Features = new FeaturesQuerier(this);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public static FunctionGenerator<Assembly, Func<Assembly, bool>> IsSharingRootName { get; } = new FunctionGenerator<Assembly, Func<Assembly, bool>>(
-            entry => assembly => assembly.FullName.StartsWith(entry.FullName.Split(',')[0].Split('.')[0]),
-            Assembly.GetEntryAssembly()
-        );
+        /// <returns></returns>
+        public IEnumerable<Assembly> ProjectAssemblies { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public void LoadAssemblies() =>
-            _options.Directories
+        public IReadOnlyDictionary<string, IEnumerable<Type>> Features { get; }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public void LoadExternalAssemblies() =>
+            _options.ExternalDirectories
                 .SelectMany(dir =>
                     Directory
                         .EnumerateFiles(dir.Path, "*.dll", dir.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
@@ -102,6 +110,46 @@ namespace Alsein.Utilities.Modulization
 
                 return true;
             }
+        }
+
+        private class FeaturesQuerier : IReadOnlyDictionary<string, IEnumerable<Type>>
+        {
+            private AssemblyManager _target;
+
+            public FeaturesQuerier(AssemblyManager target) => _target = target;
+
+            private IEnumerable<Type> AllTypes => _target.ProjectAssemblies.SelectMany(asm => asm.ExportedTypes);
+
+            public IEnumerable<Type> this[string key] => TryGetValue(key, out var value) ? value : throw new KeyNotFoundException();
+
+            public IEnumerable<string> Keys => _target._options.FeatureFilters.Keys;
+
+            public IEnumerable<IEnumerable<Type>> Values => this.Select(feature => feature.Value);
+
+            public int Count => _target._options.FeatureFilters.Count;
+
+            public bool ContainsKey(string key) => _target._options.FeatureFilters.ContainsKey(key);
+
+            public IEnumerator<KeyValuePair<string, IEnumerable<Type>>> GetEnumerator() =>
+                AllTypes
+                    .ToArray()
+                    .To(types =>
+                        _target._options.FeatureFilters.Select(feature =>
+                            new KeyValuePair<string, IEnumerable<Type>>(
+                                feature.Key,
+                                types.Where(feature.Value)
+                            )
+                        )
+                    )
+                    .GetEnumerator();
+
+            public bool TryGetValue(string key, out IEnumerable<Type> value)
+            {
+                value = _target._options.FeatureFilters.TryGetValue(key, out var filter) ? AllTypes.Where(filter) : default;
+                return value != default;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
         }
     }
 }

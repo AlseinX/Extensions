@@ -25,7 +25,7 @@ namespace Alsein.Utilities.Modulization
             Services.AddSingleton<IAssemblyManager, AssemblyManager>();
             var entry = Assembly.GetEntryAssembly();
             Services.Configure<AssemblyManagerOptions>(o =>
-                o.Directories.Add(new AssemblyDirectory(Path.GetDirectoryName(entry.Location), false, path =>
+                o.ExternalDirectories.Add(new AssemblyDirectory(Path.GetDirectoryName(entry.Location), false, path =>
                     Path.GetFileNameWithoutExtension(path).StartsWith(entry.FullName.Split(',')[0].Split('.')[0]))
                 )
             );

@@ -1,6 +1,6 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
 
-    <Import Project="version.props"/>
+    <Import Project="../Alsein.Utilities.props"/>
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>

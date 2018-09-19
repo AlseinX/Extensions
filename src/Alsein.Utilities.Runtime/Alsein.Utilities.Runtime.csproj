@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../Alsein.Utilities.props" />
-
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Alsein's Runtime Binding Utilities</Title>
     <Description>Some conviniences for runtime binding.</Description>
   </PropertyGroup>

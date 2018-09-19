@@ -42,13 +42,19 @@ namespace Alsein.Utilities.Test
         public void AssemblyTest()
         {
             var asms = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("Alsein")).ToArray();
-            var manager = new AssemblyManagerBuilder().ConfigureDirectories(o =>
+            var manager = new AssemblyManagerBuilder().WithDirectories(o =>
             {
                 o.Clear();
                 o.Add(new AssemblyDirectory("../../../../../src/Alsein.Utilities.Essentials/bin/Debug/netstandard2.0/", false, x => true));
             }).Build();
-            manager.LoadAssemblies();
+            manager.LoadExternalAssemblies();
             var asms2 = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("Alsein")).ToArray();
+        }
+
+        [Fact]
+        public void TypeScanTest()
+        {
+
         }
 
         [Fact]

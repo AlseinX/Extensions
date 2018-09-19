@@ -44,7 +44,7 @@ namespace Alsein.Utilities
         {
             entry = entry ?? Assembly.GetEntryAssembly();
             var types = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(AssemblyManager.IsSharingRootName[entry])
+                .Where(asm => asm.IsSharingRootNamespace(entry))
                 .SelectMany(t => t.DefinedTypes).ToArray()
                 .Where(filter ?? (t => true))
                 .ToArray();
