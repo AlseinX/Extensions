@@ -2,25 +2,4 @@
 
     <Import Project="../Alsein.Utilities.props"/>
 
-    <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-        <AssemblyVersion>$(Version)</AssemblyVersion>
-        <RootNamespace>Alsein.Utilities</RootNamespace>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <Authors>Alsein</Authors>
-        <Copyright>Copyright &#x00A9; Alsein.  All rights reserved.</Copyright>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <GitRepository>AlseinX/Alsein.Utilities</GitRepository>
-        <PackageProjectUrl>https://github.com/$(GitRepository)</PackageProjectUrl>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/$(GitRepository)/master/LICENSE</PackageLicenseUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/$(GitRepository)/master/Alsein.png</PackageIconUrl>
-        <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-        <MinClientVersion>3.4</MinClientVersion>
-        <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
-    </PropertyGroup>
-
 </Project>

@@ -27,7 +27,7 @@ namespace Alsein.Utilities.Modulization
                     services.Add(new ServiceDescriptor(i, provider => provider.GetService(type), lifetime));
                 }
             }
-            manager.Features["Service"].ForAll(type =>
+            foreach (var type in manager.Features["Service"])
             {
                 if (type.IsSingletonService())
                 {
@@ -41,7 +41,7 @@ namespace Alsein.Utilities.Modulization
                 {
                     register(type, ServiceLifetime.Transient);
                 }
-            });
+            }
             return manager;
         }
     }
