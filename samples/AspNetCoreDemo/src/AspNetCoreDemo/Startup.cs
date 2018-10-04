@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Alsein.Utilities.Modulization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,7 +26,11 @@ namespace AspNetCoreDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var manager = services.AddAssemblyManager();
+            manager.LoadExternalAssemblies();
+            manager.AddServicesTo(services);
+            services.AddMvc().AddAssemblyManager(manager).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +47,7 @@ namespace AspNetCoreDemo
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseSignalRWithHubs();
         }
     }
 }
