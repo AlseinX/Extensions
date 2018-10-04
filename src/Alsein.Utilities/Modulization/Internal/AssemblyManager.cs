@@ -6,13 +6,13 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 
-namespace Alsein.Utilities.Modulization
+namespace Alsein.Utilities.Modulization.Internal
 {
 
     /// <summary>
     /// 
     /// </summary>
-    public class AssemblyManager : IAssemblyManager
+    internal class AssemblyManager : IAssemblyManager
     {
         private readonly AssemblyManagerOptions _options;
 

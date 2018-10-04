@@ -12,7 +12,7 @@ namespace Alsein.Utilities.Test.TypeScanning
         [Fact]
         public void TypeScanningTest()
         {
-            var manager = new AssemblyManagerBuilder().WithProjectAssemblyFilter(asm => asm.IsSharingRootNamespace(GetType().Assembly)).Build();
+            var manager = AssemblyManagerBuilder.CreateDefault().WithProjectAssemblyFilter(asm => asm.IsSharingRootNamespace(GetType().Assembly)).Build();
             manager.LoadExternalAssemblies();
             var services = new ServiceCollection();
             manager.AddServicesTo(services);

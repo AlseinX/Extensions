@@ -14,6 +14,18 @@ namespace Alsein.Utilities.Modulization
         /// 
         /// </summary>
         /// <param name="builder"></param>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        public static IAssemblyManagerBuilder WithEntryAssembly(this IAssemblyManagerBuilder builder, Assembly entry)
+        {
+            builder.Services.Configure<AssemblyManagerOptions>(option => option.EntryAssembly = entry);
+            return builder;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
         /// <param name="action"></param>
         /// <returns></returns>
         public static IAssemblyManagerBuilder WithDirectories(this IAssemblyManagerBuilder builder, Action<IList<AssemblyDirectory>> action)

@@ -1,34 +1,17 @@
-using System.IO;
-using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Alsein.Utilities.Modulization
 {
     /// <summary>
     /// 
     /// </summary>
-    public class AssemblyManagerBuilder : IAssemblyManagerBuilder
+    public static class AssemblyManagerBuilder
     {
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="services"></param>
         /// <returns></returns>
-        public IServiceCollection Services { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public AssemblyManagerBuilder(IServiceCollection services = null)
-        {
-            Services = services ?? new ServiceCollection();
-            Services.AddSingleton<IAssemblyManager, AssemblyManager>();
-            var entry = Assembly.GetEntryAssembly();
-            Services.Configure<AssemblyManagerOptions>(o =>
-                o.ExternalDirectories.Add(new AssemblyDirectory(Path.GetDirectoryName(entry.Location), false, path =>
-                    Path.GetFileNameWithoutExtension(path).StartsWith(entry.FullName.Split(',')[0].Split('.')[0]))
-                )
-            );
-        }
+        public static IAssemblyManagerBuilder CreateDefault(IServiceCollection services = null) => new Internal.AssemblyManagerBuilder(services);
     }
 }
