@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F49250B0-6C8E-4209-B75B-6D2F4AE38011}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{F49250B0-6C8E-4209-B75B-6D2F4AE38011}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities", "src\Alsein.Utilities\Alsein.Utilities.csproj", "{D26E3A1F-7CB3-4D64-8376-269669ED8623}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities", "src\Alsein.Utilities\Alsein.Utilities.csproj", "{D26E3A1F-7CB3-4D64-8376-269669ED8623}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Autofac", "src\Alsein.Utilities.Autofac\Alsein.Utilities.Autofac.csproj", "{F14FA785-FD03-4560-9486-4FF01C4FEB1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Autofac", "src\Alsein.Utilities.Autofac\Alsein.Utilities.Autofac.csproj", "{F14FA785-FD03-4560-9486-4FF01C4FEB1C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9E181023-335C-43CC-8027-72119420BE8E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{9E181023-335C-43CC-8027-72119420BE8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Test", "test\Alsein.Utilities.Test\Alsein.Utilities.Test.csproj", "{7D025DBB-6F77-47CF-B1BE-10A08FF36BDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Test", "test\Alsein.Utilities.Test\Alsein.Utilities.Test.csproj", "{7D025DBB-6F77-47CF-B1BE-10A08FF36BDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.IO", "src\Alsein.Utilities.IO\Alsein.Utilities.IO.csproj", "{515CAFFB-0376-4992-BB78-0CA105972180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.IO", "src\Alsein.Utilities.IO\Alsein.Utilities.IO.csproj", "{515CAFFB-0376-4992-BB78-0CA105972180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Runtime", "src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj", "{69673710-35BA-4337-A141-86D3CF7A81D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Runtime", "src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj", "{69673710-35BA-4337-A141-86D3CF7A81D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Essentials", "src\Alsein.Utilities.Essentials\Alsein.Utilities.Essentials.csproj", "{E3652E0D-F9EA-4EDF-90B6-8C0350F666C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Essentials", "src\Alsein.Utilities.Essentials\Alsein.Utilities.Essentials.csproj", "{E3652E0D-F9EA-4EDF-90B6-8C0350F666C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D26E3A1F-7CB3-4D64-8376-269669ED8623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -105,6 +102,9 @@ Global
 		{E3652E0D-F9EA-4EDF-90B6-8C0350F666C3}.Release|x86.ActiveCfg = Release|Any CPU
 		{E3652E0D-F9EA-4EDF-90B6-8C0350F666C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D26E3A1F-7CB3-4D64-8376-269669ED8623} = {F49250B0-6C8E-4209-B75B-6D2F4AE38011}
 		{F14FA785-FD03-4560-9486-4FF01C4FEB1C} = {F49250B0-6C8E-4209-B75B-6D2F4AE38011}
@@ -112,5 +112,8 @@ Global
 		{515CAFFB-0376-4992-BB78-0CA105972180} = {F49250B0-6C8E-4209-B75B-6D2F4AE38011}
 		{69673710-35BA-4337-A141-86D3CF7A81D6} = {F49250B0-6C8E-4209-B75B-6D2F4AE38011}
 		{E3652E0D-F9EA-4EDF-90B6-8C0350F666C3} = {F49250B0-6C8E-4209-B75B-6D2F4AE38011}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01B5D0E2-AC1C-4D59-98A1-D969980FA81B}
 	EndGlobalSection
 EndGlobal

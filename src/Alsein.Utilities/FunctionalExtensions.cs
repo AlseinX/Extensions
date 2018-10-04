@@ -95,7 +95,7 @@ namespace Alsein.Utilities
         /// <param name="source"></param>
         /// <param name="separator"></param>
         /// <returns></returns>
-        public static string Join<TResult>(this IEnumerable<TResult> source, string separator) => string.Join(separator, source);
+        public static string Join<TResult>(this IEnumerable<TResult> source, string separator = "") => string.Join(separator, source);
 
         /// <summary>
         /// 
@@ -184,6 +184,14 @@ namespace Alsein.Utilities
         /// <param name="source"></param>
         /// <param name="predicate"></param>
         public static void RemoveWhere<TSource>(this ICollection<TSource> source, Func<TSource, bool> predicate) => source.Where(predicate).ForAll(source.Remove);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="times"></param>
+        /// <returns></returns>
+        public static string Replicate(this string source, int times) => source.Plural(times).Join();
 
         /// <summary>
         /// 

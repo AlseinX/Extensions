@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Alsein's Configuration Conviniences for Autofac</Title>
     <Description>Some injection conviniences on Autofac integration.</Description>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

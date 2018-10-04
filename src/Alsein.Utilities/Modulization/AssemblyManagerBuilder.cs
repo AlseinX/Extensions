@@ -19,9 +19,9 @@ namespace Alsein.Utilities.Modulization
         /// <summary>
         /// 
         /// </summary>
-        public AssemblyManagerBuilder()
+        public AssemblyManagerBuilder(IServiceCollection services = null)
         {
-            Services = new ServiceCollection();
+            Services = services ?? new ServiceCollection();
             Services.AddSingleton<IAssemblyManager, AssemblyManager>();
             var entry = Assembly.GetEntryAssembly();
             Services.Configure<AssemblyManagerOptions>(o =>
