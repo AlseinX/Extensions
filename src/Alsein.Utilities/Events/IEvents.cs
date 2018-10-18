@@ -78,11 +78,11 @@ namespace Alsein.Utilities.Events
 
         IEvents<TTarget> SetParent<TParent>(Func<TParent> selector)
         where TParent : class;
+
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-
         TTarget Target { get; }
     }
 }
