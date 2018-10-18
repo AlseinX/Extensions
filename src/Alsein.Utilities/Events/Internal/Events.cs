@@ -13,7 +13,7 @@ namespace Alsein.Utilities.Events.Internal
         {
             _isDisposed = false;
             _passiveHandlers = new List<Delegate>();
-            _activeHandlers = new ConcurrentQueue<Quote>();
+            _activeHandlers = new List<Quote>();
             _pool = pool;
             Target = target;
         }
@@ -22,7 +22,7 @@ namespace Alsein.Utilities.Events.Internal
 
         private List<Delegate> _passiveHandlers;
 
-        private ConcurrentQueue<Quote> _activeHandlers;
+        private List<Quote> _activeHandlers;
 
         private EventPool _pool;
 
@@ -41,7 +41,7 @@ namespace Alsein.Utilities.Events.Internal
         public void Dispose()
         {
             DisposeSelf();
-            _pool.Values.PosteritiesOf(this, x => x.Parent).ForAll(x => (x as IChainDisposable)?.DisposeSelf());
+            _pool.Values.PosteritiesOf(this, x => x.Parent).LockedCache().ForAll(x => (x as IChainDisposable)?.DisposeSelf());
 
         }
 
@@ -71,15 +71,40 @@ namespace Alsein.Utilities.Events.Internal
                     break;
 
                 case EventDiffusionOptions.Popup:
-                    this.Recurse<IEvents<object>>(x => x.Parent).ForAll(x => x.FireEvent(eventObject));
+                    this.Recurse<IEvents<object>>(x => x.Parent).LockedCache().ForAll(x => x.FireEvent(eventObject));
                     break;
 
                 case EventDiffusionOptions.RecurseDown:
                     FireEvent(eventObject);
-                    _pool.Values.PosteritiesOf(this, x => x.Parent).ForAll(x => x.FireEvent(eventObject));
+                    _pool.Values.PosteritiesOf(this, x => x.Parent).LockedCache().ForAll(x => x.FireEvent(eventObject));
                     break;
             }
             return this;
+        }
+
+        private IEnumerable<Quote> TakeActiveHandlers()
+        {
+            var matches = default(IEnumerable<Quote>);
+            lock (_activeHandlers)
+            {
+                matches = _activeHandlers
+                    .ToArray();
+                _activeHandlers.Clear();
+            }
+            return matches;
+        }
+
+        private IEnumerable<Quote> TakeActiveHandlers<TEvent>()
+        {
+            var matches = default(IEnumerable<Quote>);
+            lock (_activeHandlers)
+            {
+                matches = _activeHandlers
+                    .Where(quote => quote.Type.IsAssignableFrom(typeof(TEvent)))
+                    .ToArray();
+                matches.ForAll(_activeHandlers.Remove);
+            }
+            return matches;
         }
 
         private void FireEvent<TEvent>(TEvent eventObject)
@@ -87,20 +112,14 @@ namespace Alsein.Utilities.Events.Internal
         {
             var context = new EventContext<TEvent>(eventObject, this);
 
-            foreach (Action<IEventContext<TEvent>> action in _passiveHandlers)
+            foreach (Action<IEventContext<TEvent>> action in _passiveHandlers.LockedCache())
             {
                 action(context);
             }
 
-            lock (_activeHandlers)
+            foreach (var quote in TakeActiveHandlers<TEvent>())
             {
-                while (_activeHandlers.TryDequeue(out var quote))
-                {
-                    if (quote.Type.IsAssignableFrom(typeof(TEvent)))
-                    {
-                        quote.Source.SetResult(context);
-                    }
-                }
+                quote.Source.SetResult(context);
             }
         }
 
@@ -108,7 +127,10 @@ namespace Alsein.Utilities.Events.Internal
         where TEvent : class
         {
             NoDisposed();
-            _passiveHandlers.Add(action);
+            lock (_passiveHandlers)
+            {
+                _passiveHandlers.Add(action);
+            }
             return this;
         }
 
@@ -119,7 +141,7 @@ namespace Alsein.Utilities.Events.Internal
             var source = new TaskCompletionSource<IEventContext<object>>();
             lock (_activeHandlers)
             {
-                _activeHandlers.Enqueue(new Quote(source, typeof(TEvent)));
+                _activeHandlers.Add(new Quote(source, typeof(TEvent)));
             }
             return (IEventContext<TEvent>)await source.Task;
         }
@@ -127,39 +149,36 @@ namespace Alsein.Utilities.Events.Internal
         public IEvents<TTarget> RemoveEventHandler<TEvent>(Action<IEventContext<TEvent>> action) where TEvent : class
         {
             NoDisposed();
-            _passiveHandlers.Remove(action);
+            lock (_passiveHandlers)
+            {
+                _passiveHandlers.Remove(action);
+            }
             return this;
         }
 
         public bool HasEventHandler<TEvent>(Action<IEventContext<TEvent>> action) where TEvent : class
         {
             NoDisposed();
-            return _passiveHandlers.Contains(action);
+            lock (_passiveHandlers)
+            {
+                return _passiveHandlers.Contains(action);
+            }
         }
 
         public IEvents<TTarget> Flush()
         {
-            lock (_activeHandlers)
+            foreach (var quote in TakeActiveHandlers())
             {
-                while (_activeHandlers.TryDequeue(out var quote))
-                {
-                    quote.Source.SetCanceled();
-                }
+                quote.Source.SetCanceled();
             }
             return this;
         }
 
         public IEvents<TTarget> Flush<TEvent>() where TEvent : class
         {
-            lock (_activeHandlers)
+            foreach (var quote in TakeActiveHandlers<TEvent>())
             {
-                while (_activeHandlers.TryDequeue(out var quote))
-                {
-                    if (quote.Type.IsAssignableFrom(typeof(TEvent)))
-                    {
-                        quote.Source.SetCanceled();
-                    }
-                }
+                quote.Source.SetCanceled();
             }
             return this;
         }

@@ -101,6 +101,20 @@ namespace Alsein.Utilities
         /// 
         /// </summary>
         /// <param name="source"></param>
+        /// <typeparam name="TSource"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<TSource> LockedCache<TSource>(this IEnumerable<TSource> source)
+        {
+            lock (source)
+            {
+                return source.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
         /// <param name="random"></param>
         /// <returns></returns>
         public static IEnumerable<TSource> Mess<TSource>(this IEnumerable<TSource> source, Random random = null)
