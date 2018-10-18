@@ -145,6 +145,36 @@ namespace Alsein.Utilities
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="recurser"></param>
+        /// <typeparam name="TSource"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<TSource> PosteritiesOf<TSource>(this IEnumerable<TSource> source, TSource target, Func<TSource, TSource> recurser)
+        {
+            source = source.ToArray();
+            var found = new List<TSource>();
+            found.Add(target);
+        start:
+            foreach (var item in source)
+            {
+                if (found.Contains(item))
+                {
+                    continue;
+                }
+                if (found.Any(parent => recurser(item)?.Equals(parent) ?? false))
+                {
+                    found.Add(item);
+                    yield return item;
+                    goto start;
+                }
+            }
+            yield break;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <param name="recurser"></param>
