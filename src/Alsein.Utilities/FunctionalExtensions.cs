@@ -342,5 +342,13 @@ namespace Alsein.Utilities
         /// <param name="action"></param>
         /// <returns></returns>
         public static IEnumerable<TSource> WithAll<TSource>(this IEnumerable<TSource> source, Action<TSource> action) => source.Select(item => item.With(action));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<KeyValuePair<TSource, int>> Indexed<TSource>(this IEnumerable<TSource> source) => source.Select((item, index) => new KeyValuePair<TSource, int>(item, index));
     }
 }
