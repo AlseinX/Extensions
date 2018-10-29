@@ -1,14 +1,11 @@
 # Alsein.Utilities
 
-Some commonly used basic utilities for .NET programming.
+Some programming conveniences for .NET programming.
 
 ## Targets Supported
 
-| .NET Implemention | Minimum Version |
-| ------------- | :-----: |
-| .NET Standard | 2.0 |
-| .NET Core | 2.0 |
-| .NET Framework | 4.5 |
+This library supports only .NET Standard 2.0
+.NET implementions information for .NET Standard 2.0: <https://docs.microsoft.com/zh-cn/dotnet/standard/net-standard>
 
 ## Add To Your Projoct
 
@@ -18,4 +15,4 @@ Run the following command within your project directory.
 
 ## Working On Progress
 
-This lib is on alpha version, features are being added while using.
+This library is on testing version, features are being added while using.
