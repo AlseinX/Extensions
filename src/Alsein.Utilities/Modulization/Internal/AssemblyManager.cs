@@ -23,7 +23,6 @@ namespace Alsein.Utilities.Modulization.Internal
         public AssemblyManager(IOptions<AssemblyManagerOptions> options)
         {
             _options = options.Value;
-            ProjectAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(_options.ProjectAssemblyFilter);
             Features = new FeaturesQuerier(this);
         }
 
@@ -31,7 +30,7 @@ namespace Alsein.Utilities.Modulization.Internal
         /// 
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Assembly> ProjectAssemblies { get; }
+        public IEnumerable<Assembly> ProjectAssemblies => AppDomain.CurrentDomain.GetAssemblies().Where(_options.ProjectAssemblyFilter);
 
         /// <summary>
         /// 
