@@ -83,5 +83,19 @@ namespace Alsein.Utilities.Test
             Task.WaitAll(task1, task2);
             return;
         }
+
+        [Fact]
+        public async Task AsyncSelectTest()
+        {
+            var result = new List<int>();
+            var a = new[] { 1, 2, 3, 4, 5 };
+            var b = a.SelectAsync(async x =>
+            {
+                await Task.Delay(10);
+                return x;
+            });
+            await a.ForAllAsync(x => Task.Delay(x));
+            await b.ForEachAsync(result.Add);
+        }
     }
 }
