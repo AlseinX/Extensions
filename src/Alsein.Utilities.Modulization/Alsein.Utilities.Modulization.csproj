@@ -2,14 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Title>Alsein's IO Models</Title>
-    <Description>A library for object IOs.</Description>
+    <Title>Alsein's .NET Programming Utilities</Title>
+    <Description>A fundamental class library by Alsein.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Core\Alsein.Utilities.Core.csproj" />
     <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
   </ItemGroup>
 
 </Project>
-

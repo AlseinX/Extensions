@@ -1,6 +1,5 @@
 using Alsein.Utilities.IO;
 using Alsein.Utilities.Modulization;
-using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,15 +15,6 @@ namespace Alsein.Utilities.Test
     {
         [Fact]
         public void Message() => Console.WriteLine("Testing for Alsein.Utilities");
-
-        [Theory]
-        [InlineData("../../../../../LICENSE", "MIT License")]
-        public void UsingTest(string path, string result) => Assert.Equal
-        (path
-            .Using(() => File.OpenRead(path))
-            .Using(stream => new StreamReader(stream))
-            .Return(reader => reader.ReadLine()), result
-        );
 
         [Theory]
         [InlineData(2, 2, 1, new[] { 2 })]
@@ -60,7 +50,7 @@ namespace Alsein.Utilities.Test
         [Fact]
         public void IOTest()
         {
-            var (endPoint1, endPoint2) = AsyncDataEndPoint.CreateDuplex();
+            var (endPoint1, endPoint2) = Tube.CreateDuplex();
             var record = new List<string>();
             endPoint1.Receive += async (value) => await Task.Run(() => record.Add("ep1 event receiped: " + value));
             endPoint2.Receive += async (value) => await Task.Run(() => record.Add("ep2 event receiped: " + value));

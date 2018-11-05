@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Alsein.Utilities\Alsein.Utilities.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Core\Alsein.Utilities.Core.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
