@@ -94,7 +94,7 @@ namespace Alsein.Utilities
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<TSource, int>> Indexed<TSource>(this IEnumerable<TSource> source) => source.Select((item, index) => new KeyValuePair<TSource, int>(item, index));
+        public static IEnumerable<KeyValuePair<int, TSource>> Indexed<TSource>(this IEnumerable<TSource> source) => source.Select((item, index) => new KeyValuePair<int, TSource>(index, item));
 
         /// <summary>
         /// 
