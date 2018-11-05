@@ -3,29 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1CF9B050-5C08-45F8-A1D8-D29120698130}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{1CF9B050-5C08-45F8-A1D8-D29120698130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities", "src\Alsein.Utilities\Alsein.Utilities.csproj", "{8FCBE797-5A83-4A13-82E4-E619903C0B6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities", "src\Alsein.Utilities\Alsein.Utilities.csproj", "{8FCBE797-5A83-4A13-82E4-E619903C0B6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.AspNetCore", "src\Alsein.Utilities.AspNetCore\Alsein.Utilities.AspNetCore.csproj", "{B473ED1A-8A40-4A0E-A4C0-6354D25AA521}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.AspNetCore", "src\Alsein.Utilities.AspNetCore\Alsein.Utilities.AspNetCore.csproj", "{B473ED1A-8A40-4A0E-A4C0-6354D25AA521}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Core", "src\Alsein.Utilities.Core\Alsein.Utilities.Core.csproj", "{82545314-14EE-4346-846B-A524F2974F72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Core", "src\Alsein.Utilities.Core\Alsein.Utilities.Core.csproj", "{82545314-14EE-4346-846B-A524F2974F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Functional", "src\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj", "{6BAD8F9E-5367-46A5-921D-85610E52FB1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Functional", "src\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj", "{6BAD8F9E-5367-46A5-921D-85610E52FB1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.IO", "src\Alsein.Utilities.IO\Alsein.Utilities.IO.csproj", "{FD492DDF-00A6-48B4-AFCC-5E73CB742803}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.IO", "src\Alsein.Utilities.IO\Alsein.Utilities.IO.csproj", "{FD492DDF-00A6-48B4-AFCC-5E73CB742803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Modulization", "src\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj", "{7961C667-1BDF-4C7E-BA0D-48FA7A905BD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Modulization", "src\Alsein.Utilities.Modulization\Alsein.Utilities.Modulization.csproj", "{7961C667-1BDF-4C7E-BA0D-48FA7A905BD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Runtime", "src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj", "{D9AFEDE6-198E-46EF-865D-BD24DFB15A8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Runtime", "src\Alsein.Utilities.Runtime\Alsein.Utilities.Runtime.csproj", "{D9AFEDE6-198E-46EF-865D-BD24DFB15A8D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{80A543CA-B015-4692-A233-F02E7BDF8E3D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{80A543CA-B015-4692-A233-F02E7BDF8E3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.Test", "test\Alsein.Utilities.Test\Alsein.Utilities.Test.csproj", "{8F4B743B-C7EB-4E6F-8E4D-F0434D0B5EDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Test", "test\Alsein.Utilities.Test\Alsein.Utilities.Test.csproj", "{8F4B743B-C7EB-4E6F-8E4D-F0434D0B5EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.WebTest", "test\Alsein.Utilities.WebTest\Alsein.Utilities.WebTest.csproj", "{1D423AC7-1212-4880-B237-0F10AA58CFC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.WebTest", "test\Alsein.Utilities.WebTest\Alsein.Utilities.WebTest.csproj", "{1D423AC7-1212-4880-B237-0F10AA58CFC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsein.Utilities.WebTest.TestModule", "test\Alsein.Utilities.WebTest.TestModule\Alsein.Utilities.WebTest.TestModule.csproj", "{390030E9-ACD0-4525-A495-C7F1A52DA29D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.WebTest.TestModule", "test\Alsein.Utilities.WebTest.TestModule\Alsein.Utilities.WebTest.TestModule.csproj", "{390030E9-ACD0-4525-A495-C7F1A52DA29D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,9 +35,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8FCBE797-5A83-4A13-82E4-E619903C0B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -161,6 +158,9 @@ Global
 		{390030E9-ACD0-4525-A495-C7F1A52DA29D}.Release|x86.ActiveCfg = Release|Any CPU
 		{390030E9-ACD0-4525-A495-C7F1A52DA29D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8FCBE797-5A83-4A13-82E4-E619903C0B6E} = {1CF9B050-5C08-45F8-A1D8-D29120698130}
 		{B473ED1A-8A40-4A0E-A4C0-6354D25AA521} = {1CF9B050-5C08-45F8-A1D8-D29120698130}
@@ -172,5 +172,8 @@ Global
 		{8F4B743B-C7EB-4E6F-8E4D-F0434D0B5EDE} = {80A543CA-B015-4692-A233-F02E7BDF8E3D}
 		{1D423AC7-1212-4880-B237-0F10AA58CFC0} = {80A543CA-B015-4692-A233-F02E7BDF8E3D}
 		{390030E9-ACD0-4525-A495-C7F1A52DA29D} = {80A543CA-B015-4692-A233-F02E7BDF8E3D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1AF6F55F-F56C-4CA5-B106-82048DF64128}
 	EndGlobalSection
 EndGlobal
