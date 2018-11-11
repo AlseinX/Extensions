@@ -101,6 +101,33 @@ namespace Alsein.Utilities
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="source"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public static int IndexOf<TSource>(this IEnumerable<TSource> source, TSource item) => source.IndexOf(i => EqualityComparer<TSource>.Default.Equals(i, item));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static int IndexOf<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            var i = 0;
+            foreach (var item in source)
+            {
+                if (predicate(item))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="source"></param>
         /// <param name="separator"></param>

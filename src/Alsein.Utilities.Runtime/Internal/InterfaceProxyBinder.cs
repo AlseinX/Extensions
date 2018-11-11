@@ -4,22 +4,18 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Alsein.Utilities.Runtime
+namespace Alsein.Utilities.Runtime.Internal
 {
-    internal class InterfaceProxyBinder : IProxyBinder, IDynamicInvocable
+    internal class InterfaceProxyBinder : IProxyBinder
     {
 
-        private protected static IDictionary<Type, Type> Implements { get; } = new Dictionary<Type, Type>();
+        private static IDictionary<Type, Type> Implements { get; } = new Dictionary<Type, Type>();
 
-        private protected readonly Delegate[] _methodImplements;
-
-        private protected readonly Type _implement;
-
-        private protected readonly MethodInfo[] _methods;
+        private readonly Type _implementType;
 
         public Type Target { get; }
 
-        internal InterfaceProxyBinder(Type target, IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
+        internal InterfaceProxyBinder(Type target)
         {
             Target = target;
 
@@ -33,35 +29,13 @@ namespace Alsein.Utilities.Runtime
                 throw new InvalidOperationException("The target type cannot be an generic definition.");
             }
 
-            _methods = GetAllMethods(Target);
-            _methodImplements = new Delegate[_methods.Length];
-            for (var i = 0; i < _methods.Length; i++)
+            if (!Implements.TryGetValue(Target, out _implementType))
             {
-                _methodImplements[i] = implements
-                    .Where(imp => imp.Key.MetadataToken == _methods[i].MetadataToken)
-                    .Select(imp => imp.Value).SingleOrDefault();
-            }
-
-            if (!Implements.TryGetValue(Target, out _implement))
-            {
-                Implements.Add(Target, _implement = BuildType());
+                Implements.Add(Target, _implementType = BuildType());
             }
         }
 
-        public object GetProxy() => Activator.CreateInstance(_implement, this);
-
-        public object DispatchInvocation(int methodId, Type[] genericArgs, object[] valueArgs)
-        {
-            switch (_methodImplements[methodId])
-            {
-                case VariableArgsHandler handler:
-                    return handler(genericArgs, valueArgs);
-                case Delegate handler:
-                    return handler.DynamicInvoke(genericArgs.Union(valueArgs).ToArray());
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        public object GetProxy(IDynamicInvoker invoker) => Activator.CreateInstance(_implementType, invoker);
 
         private MethodInfo[] GetAllMethods(Type type) =>
             type.GetMethods()
@@ -71,20 +45,22 @@ namespace Alsein.Utilities.Runtime
         private TypeInfo BuildType()
         {
             var thisType = this.GetType();
-            var dispatchInvocation = typeof(IDynamicInvocable).GetMethod("DispatchInvocation");
-            var getTypeFromHandle = typeof(Type).GetMethod("GetTypeFromHandle");
+            var dispatchInvocation = typeof(IDynamicInvoker).GetMethod(nameof(IDynamicInvoker.InvokeMethod));
+            var getTypeFromHandle = typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle));
+            var getMethodFromHandle = typeof(MethodBase).GetMethod(nameof(MethodBase.GetMethodFromHandle), new[] { typeof(RuntimeMethodHandle) });
 
             var typ = RuntimeAssembly.ModuleBuilder.DefineType($"{Target.Name}Proxy");
             typ.AddInterfaceImplementation(Target);
 
-            var binder = typ.DefineField("_binder", typeof(IDynamicInvocable), FieldAttributes.Private);
+            var implement = typ.DefineField("_implement", typeof(IDynamicInvoker), FieldAttributes.Private);
 
-            var ctor = typ.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new Type[] { thisType });
+            var ctor = typ.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new Type[] { typeof(IDynamicInvoker) });
             {
                 var il = ctor.GetILGenerator();
+                // this._binder = Arguments[0];
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldarg_1);
-                il.Emit(OpCodes.Stfld, binder);
+                il.Emit(OpCodes.Stfld, implement);
                 il.Emit(OpCodes.Ret);
             }
 
@@ -145,26 +121,34 @@ namespace Alsein.Utilities.Runtime
 
                 for (var j = 0; j < vArgTypes.Length; j++)
                 {
-                    // ilVArgs[j] = (object)Arguments[j+1];
+                    // ilVArgs[j] = (object)Arguments[j];
                     il.Emit(OpCodes.Ldloc, vArgs);
                     il.Emit(OpCodes.Ldc_I4, j);
                     il.Emit(OpCodes.Ldarg, j + 1);
-                    il.Emit(OpCodes.Box, vArgTypes[j]);
+                    if (vArgTypes[j].IsValueType)
+                    {
+                        il.Emit(OpCodes.Box, vArgTypes[j]);
+                    }
                     il.Emit(OpCodes.Stelem_Ref);
                 }
 
-                // this._binder.DispatchInvocation(i, ilTArgs, ilVArgs);
+                // this._implement.DispatchInvocation(i, ilTArgs, ilVArgs);
                 il.Emit(OpCodes.Ldarg_0);
-                il.Emit(OpCodes.Ldfld, binder);
-                il.Emit(OpCodes.Ldc_I4, i);
+                il.Emit(OpCodes.Ldfld, implement);
+                il.Emit(OpCodes.Ldtoken, methodInfo);
+                il.Emit(OpCodes.Call, getMethodFromHandle);
                 il.Emit(OpCodes.Ldloc, tArgs);
                 il.Emit(OpCodes.Ldloc, vArgs);
-                il.Emit(OpCodes.Call, dispatchInvocation);
+                il.Emit(OpCodes.Callvirt, dispatchInvocation);
 
                 // return ?;
                 if (methodInfo.ReturnType == typeof(void))
                 {
                     il.Emit(OpCodes.Pop);
+                }
+                if (methodInfo.ReturnType.IsValueType)
+                {
+                    il.Emit(OpCodes.Unbox_Any, methodInfo.ReturnType);
                 }
                 il.Emit(OpCodes.Ret);
 

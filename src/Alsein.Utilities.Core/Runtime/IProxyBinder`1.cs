@@ -10,6 +10,6 @@ namespace Alsein.Utilities.Runtime
         /// 
         /// </summary>
         /// <returns></returns>
-        new T GetProxy();
+        new T GetProxy(IDynamicInvoker invoker);
     }
 }

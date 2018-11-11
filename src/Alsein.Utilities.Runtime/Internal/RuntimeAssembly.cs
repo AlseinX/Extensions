@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Alsein.Utilities.Runtime
+namespace Alsein.Utilities.Runtime.Internal
 {
     internal class RuntimeAssembly
     {
