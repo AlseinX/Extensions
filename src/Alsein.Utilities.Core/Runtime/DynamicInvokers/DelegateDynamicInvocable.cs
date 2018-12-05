@@ -8,7 +8,7 @@ namespace Alsein.Utilities.Runtime.DynamicInvokers
     /// <summary>
     /// 
     /// </summary>
-    public class DelegateDynamicInvoker : IDynamicInvoker
+    public class DelegateDynamicInvoker : IReflectionInvoker
     {
         private readonly IReadOnlyDictionary<MethodInfo, Delegate> _implements;
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,9 +6,9 @@ using System.Reflection.Emit;
 
 namespace Alsein.Utilities.Runtime.Internal
 {
-    internal class InterfaceProxyBinder
+    internal class ImplementationGenerator
     {
-        private static IDictionary<Type, IDictionary<Type, Type>> Implements { get; } = new ConcurrentDictionary<Type, IDictionary<Type, Type>>();
+        private static IDictionary<Type, IDictionary<Type, Type>> Implements { get; } = new Dictionary<Type, IDictionary<Type, Type>>();
 
         internal static Type GetImplemention(Type target, Type parent)
         {
@@ -18,24 +17,26 @@ namespace Alsein.Utilities.Runtime.Internal
                 throw new InvalidOperationException("The target type must be an interface.");
             }
 
-            if (target.IsGenericTypeDefinition)
+            if (typeof(IReflectionInvoker).IsAssignableFrom(target))
             {
-                throw new InvalidOperationException("The target type cannot be an generic definition.");
+                throw new InvalidOperationException("The target type must not implement IReflectionInvoker.");
             }
 
-
-            if (!Implements.TryGetValue(target, out var list))
+            lock (Implements)
             {
-                Implements.Add(target, list = new ConcurrentDictionary<Type, Type>());
+                if (!Implements.TryGetValue(target, out var list))
+                {
+                    Implements.Add(target, list = new Dictionary<Type, Type>());
+                }
+
+
+                if (!list.TryGetValue(parent, out var result))
+                {
+                    list.Add(parent, result = BuildType(target, parent));
+                }
+
+                return result;
             }
-
-
-            if (!list.TryGetValue(parent, out var result))
-            {
-                list.Add(parent, result = BuildType(target, parent));
-            }
-
-            return result;
         }
 
         private static MethodInfo[] GetAllMethods(Type type) =>
@@ -45,18 +46,52 @@ namespace Alsein.Utilities.Runtime.Internal
 
         private static TypeInfo BuildType(Type target, Type parent)
         {
-            var isInvoker = parent.GetInterfaces().Contains(typeof(IDynamicInvoker));
-            var invoke = parent.GetMethod(nameof(IDynamicInvoker.Invoke));
+            var isInvoker = parent.GetInterfaces().Contains(typeof(IReflectionInvoker));
+            var invoke = parent.GetMethod(nameof(IReflectionInvoker.Invoke));
+            var targetDef = target;
+            var parentDef = parent;
             var getTypeFromHandle = typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle));
             var getMethodFromHandle = typeof(MethodBase).GetMethod(nameof(MethodBase.GetMethodFromHandle), new[] { typeof(RuntimeMethodHandle) });
             var makeGenericMethod = typeof(Type).GetMethod(nameof(Type.MakeGenericType));
             var newNotImplementedException = typeof(NotImplementedException).GetConstructor(new Type[] { });
 
             var typ = RuntimeAssembly.ModuleBuilder.DefineType($"{target.Name}Proxy");
+            if (target.IsGenericTypeDefinition)
+            {
+                var pGenParams = target.GetGenericArguments();
+                var genParams = typ.DefineGenericParameters(pGenParams.Select(a => a.Name).ToArray());
+
+                for (var i = 0; i < genParams.Length; i++)
+                {
+                    genParams[i].SetGenericParameterAttributes(pGenParams[i].GenericParameterAttributes);
+                    var intfs = new List<Type>();
+                    var baseType = default(Type);
+                    var constraints = pGenParams[i].GetGenericParameterConstraints();
+                    foreach (var con in constraints)
+                    {
+                        if (con.IsInterface)
+                        {
+                            intfs.Add(con);
+                        }
+                        else
+                        {
+                            baseType = con;
+                        }
+                    }
+                    genParams[i].SetBaseTypeConstraint(baseType);
+                }
+
+                target = target.MakeGenericType(genParams);
+                if (parent.IsGenericTypeDefinition)
+                {
+                    parent = parent.MakeGenericType(genParams);
+                }
+            }
+
             typ.SetParent(parent);
             typ.AddInterfaceImplementation(target);
 
-            var constructors = parent.GetConstructors();
+            var constructors = parentDef.GetConstructors();
 
             foreach (var pCtor in constructors)
             {
@@ -81,7 +116,7 @@ namespace Alsein.Utilities.Runtime.Internal
                 il.Emit(OpCodes.Ret);
             }
 
-            var properties = target.GetProperties()
+            var properties = targetDef.GetProperties()
                 .Select(propertyInfo => typ.DefineProperty(
                     propertyInfo.Name,
                     PropertyAttributes.None,
@@ -91,11 +126,11 @@ namespace Alsein.Utilities.Runtime.Internal
                 )
                 .ToArray();
 
-            var methods = GetAllMethods(target);
+            var methods = GetAllMethods(targetDef);
             for (var i = 0; i < methods.Length; i++)
             {
                 var methodInfo = methods[i];
-                var match = parent.GetMethods().SingleOrDefault(m => SignatureEqual(m, methodInfo));
+                var match = parentDef.GetMethods().SingleOrDefault(m => SignatureEqual(m, methodInfo));
                 var tArgTypes = new GenericTypeParameterBuilder[] { };
                 var vArgTypes = methodInfo.GetParameters().Select(p => p.ParameterType).ToArray();
                 var mtd = typ.DefineMethod
@@ -217,6 +252,8 @@ namespace Alsein.Utilities.Runtime.Internal
             return typ.CreateTypeInfo();
         }
 
+        private static bool TypeEqual(Type type1, Type type2) => type1.IsGenericParameter && type2.IsGenericParameter ? type1.Name == type2.Name : type1 == type2;
+
         private static bool SignatureEqual(MethodInfo method1, MethodInfo method2)
         {
             if (method1.Name != method2.Name)
@@ -224,7 +261,7 @@ namespace Alsein.Utilities.Runtime.Internal
                 return false;
             }
 
-            if (method1.ReturnType != method2.ReturnType)
+            if (!TypeEqual(method1.ReturnType, method2.ReturnType))
             {
                 return false;
             }
@@ -252,7 +289,7 @@ namespace Alsein.Utilities.Runtime.Internal
 
             for (var i = 0; i < vArgs1.Length; i++)
             {
-                if (vArgs1[i].ParameterType != vArgs2[i].ParameterType)
+                if (!TypeEqual(vArgs1[i].ParameterType, vArgs2[i].ParameterType))
                 {
                     if (Array.IndexOf(tArgs1, vArgs1[i].ParameterType) != Array.IndexOf(tArgs2, vArgs2[i].ParameterType))
                     {

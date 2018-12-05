@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 
 namespace Alsein.Utilities.Runtime
@@ -6,7 +5,7 @@ namespace Alsein.Utilities.Runtime
     /// <summary>
     /// 
     /// </summary>
-    public interface IDynamicInvoker
+    public interface IReflectionInvoker
     {
         /// <summary>
         /// 
