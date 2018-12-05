@@ -1,43 +1,47 @@
-﻿using Alsein.Utilities;
+﻿using Alsein.Utilities.DependencyInjection;
 using Alsein.Utilities.Modulization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Reflection;
+using System;
 
 namespace Alsein.Utilities.WebTest
 {
-    public class Startup
+    public class Startup : IStartup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment, INestingContainer globalProvider)
         {
             Configuration = configuration;
+            GlobalContainer = globalProvider;
+            HostingEnvironment = hostingEnvironment;
         }
+
+        public IServiceProvider GlobalContainer { get; }
+
+        public IServiceProvider ApplicationContainer { get; private set; }
 
         public IConfiguration Configuration { get; }
 
+        public IHostingEnvironment HostingEnvironment { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var manager = services.AddAssemblyManager(a => a.WithEntryAssembly(Assembly.GetExecutingAssembly()));
+
+            var manager = GlobalContainer.GetRequiredService<IAssemblyManager>();
             manager.LoadExternalAssemblies();
             services.AddMvc().AddAssemblyManager(manager).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
+            services.AddNestingContainer();
+            return ApplicationContainer = GlobalContainer.CreateNestedContainer(services, false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

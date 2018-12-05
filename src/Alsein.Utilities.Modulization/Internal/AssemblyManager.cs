@@ -1,11 +1,11 @@
+using Alsein.Utilities.Extensions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Alsein.Utilities.Extensions;
-using Microsoft.Extensions.Options;
 
 namespace Alsein.Utilities.Modulization.Internal
 {
@@ -62,7 +62,7 @@ namespace Alsein.Utilities.Modulization.Internal
         public bool IsManagedAssembly(string fileName)
         {
             using (Stream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            using (BinaryReader binaryReader = new BinaryReader(fileStream))
+            using (var binaryReader = new BinaryReader(fileStream))
             {
                 if (fileStream.Length < 64)
                 {
@@ -70,7 +70,7 @@ namespace Alsein.Utilities.Modulization.Internal
                 }
 
                 fileStream.Position = 0x3C;
-                uint peHeaderPointer = binaryReader.ReadUInt32();
+                var peHeaderPointer = binaryReader.ReadUInt32();
                 if (peHeaderPointer == 0)
                 {
                     peHeaderPointer = 0x80;
@@ -82,7 +82,7 @@ namespace Alsein.Utilities.Modulization.Internal
                 }
 
                 fileStream.Position = peHeaderPointer;
-                uint peHeaderSignature = binaryReader.ReadUInt32();
+                var peHeaderSignature = binaryReader.ReadUInt32();
                 if (peHeaderSignature != 0x00004550)
                 {
                     return false;
@@ -99,16 +99,11 @@ namespace Alsein.Utilities.Modulization.Internal
                     return false;
                 }
 
-                ushort dataDictionaryStart = (ushort)(peHeaderPointer + (peFormat == PE32 ? 232 : 248));
+                var dataDictionaryStart = (ushort)(peHeaderPointer + (peFormat == PE32 ? 232 : 248));
                 fileStream.Position = dataDictionaryStart;
 
-                uint cliHeaderRva = binaryReader.ReadUInt32();
-                if (cliHeaderRva == 0)
-                {
-                    return false;
-                }
-
-                return true;
+                var cliHeaderRva = binaryReader.ReadUInt32();
+                return cliHeaderRva != 0;
             }
         }
 
@@ -149,7 +144,7 @@ namespace Alsein.Utilities.Modulization.Internal
                 return value != default;
             }
 
-            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }
