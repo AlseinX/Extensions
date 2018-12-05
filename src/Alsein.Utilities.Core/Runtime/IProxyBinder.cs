@@ -10,7 +10,7 @@ namespace Alsein.Utilities.Runtime
         /// <summary>
         /// 
         /// </summary>
-        Type Target { get; }
+        Type _target { get; }
 
         /// <summary>
         /// 

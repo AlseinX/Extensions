@@ -36,17 +36,16 @@ namespace Alsein.Utilities.Runtime.DynamicInvokers
         /// 
         /// </summary>
         /// <param name="method"></param>
-        /// <param name="genericArgs"></param>
         /// <param name="valueArgs"></param>
         /// <returns></returns>
-        public object InvokeMethod(MethodInfo method, Type[] genericArgs, object[] valueArgs)
+        public object Invoke(MethodInfo method, object[] valueArgs)
         {
             switch (_implements[method])
             {
                 case VariableArgsHandler handler:
-                    return handler(genericArgs, valueArgs);
+                    return handler(valueArgs);
                 case Delegate handler:
-                    return handler.DynamicInvoke(genericArgs.Union(valueArgs).ToArray());
+                    return handler.DynamicInvoke(valueArgs);
                 default:
                     throw new NotImplementedException();
             }
