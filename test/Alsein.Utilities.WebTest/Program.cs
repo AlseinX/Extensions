@@ -4,15 +4,12 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Xunit;
 
 namespace Alsein.Utilities.WebTest
 {
     public class Program
     {
-        [Theory]
-        [InlineData(new object[] { new string[] { } })]
-        public static void _Main(string[] args)
+        static void Main(string[] args)
         {
             var services = new ServiceCollection();
             services.AddAssemblyManager(a => a.WithEntryAssembly(Assembly.GetExecutingAssembly()));
