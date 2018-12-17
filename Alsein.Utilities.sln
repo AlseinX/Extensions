@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.WebTest.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alsein.Utilities.Natives.NCurses", "lib\Alsein.Utilities.Natives.NCurses\Alsein.Utilities.Natives.NCurses.csproj", "{66E807E1-25DA-48BE-89E8-6C87F7D93C71}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Native Packages", "Native Packages", "{A628406F-2D40-45BC-BC74-0704E0D8D368}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,6 +203,7 @@ Global
 		{8683A16E-6195-4594-BD2D-64FF974EC5BC} = {813BCF97-E0E6-4164-82A5-02ACCC28C4D8}
 		{BA80A8DC-BEB8-4BAB-A19E-0D8B2A2C8C77} = {813BCF97-E0E6-4164-82A5-02ACCC28C4D8}
 		{275E2A3E-6ECB-4AF4-BFD5-B0571CD0F927} = {813BCF97-E0E6-4164-82A5-02ACCC28C4D8}
+		{66E807E1-25DA-48BE-89E8-6C87F7D93C71} = {A628406F-2D40-45BC-BC74-0704E0D8D368}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AF6F55F-F56C-4CA5-B106-82048DF64128}
