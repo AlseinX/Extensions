@@ -1,5 +1,6 @@
 <Project>
 
   <Import Project="../build/Alsein.Utilities.props"/>
+  <Import Project="../build/NativeLibraryPackage.props"/>
 
 </Project>

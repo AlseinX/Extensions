@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="version.props"/>
+  <Import Project="../version.props"/>
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
