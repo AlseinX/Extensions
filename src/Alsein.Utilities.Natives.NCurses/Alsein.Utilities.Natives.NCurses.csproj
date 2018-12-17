@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <Description>Native libraries referenced by Alsein.Utilities packages.</Description>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <EnableApiCheck>false</EnableApiCheck>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <NoWarn>8021</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <NativeLibs Include="$(MSBuildProjectDirectory)\lib\**\*.dll" />
+    <Content Include="@(NativeLibs)" PackagePath="runtimes\%(RecursiveDir)native\%(FileName)%(Extension)">
+    </Content>
+    <Content Include="$(MSBuildProjectName).props" PackagePath="build">
+    </Content>
+  </ItemGroup>
+
+</Project>

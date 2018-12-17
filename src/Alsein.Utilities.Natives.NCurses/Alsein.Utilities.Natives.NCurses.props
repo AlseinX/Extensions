@@ -1,0 +1,19 @@
+<Project>
+
+  <PropertyGroup>
+
+    <AlseinNativesImported>true</AlseinNativesImported>
+
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(RuntimeIdentifier)' != '' ">
+
+    <NativeLibs Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/*.dll" />
+    <None Include="@(NativeLibs)">
+      <Link>%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+  </ItemGroup>
+
+</Project>

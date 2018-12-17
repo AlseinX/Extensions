@@ -1,8 +1,8 @@
 <Project>
 
-    <PropertyGroup>
-        <VersionPrefix>0.4.5</VersionPrefix>
-        <VersionSuffix/>
-    </PropertyGroup>
+  <PropertyGroup>
+    <VersionPrefix>0.4.6</VersionPrefix>
+    <VersionSuffix/>
+  </PropertyGroup>
 
 </Project>
