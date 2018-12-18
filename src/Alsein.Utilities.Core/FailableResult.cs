@@ -11,7 +11,7 @@ namespace Alsein.Utilities
         /// <param name="isSuccess"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static IFailableResult<TResult> Create<TResult>(bool isSuccess, TResult result) => new Internal.FailableResult<TResult>(isSuccess, result);
+        public static IFailableResult<TResult> Create<TResult>(bool isSuccess, TResult result) => new RuntimeInternal.FailableResult<TResult>(isSuccess, result);
 
         /// <summary>
         /// 
@@ -43,6 +43,6 @@ namespace Alsein.Utilities
         /// <param name="source"></param>
         /// <returns></returns>
         public static IFailableResult<TResult> Cast<TResult>(this IFailableResult source) =>
-            new Internal.FailableResult<TResult>(source.IsSuccess, (TResult)source.Result);
+            new RuntimeInternal.FailableResult<TResult>(source.IsSuccess, (TResult)source.Result);
     }
 }

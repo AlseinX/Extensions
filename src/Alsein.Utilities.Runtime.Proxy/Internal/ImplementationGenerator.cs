@@ -47,15 +47,15 @@ namespace Alsein.Utilities.Runtime.Internal
         private static TypeInfo BuildType(Type target, Type parent)
         {
             var isInvoker = parent.GetInterfaces().Contains(typeof(IReflectionInvoker));
-            var invoke = parent.GetMethod(nameof(IReflectionInvoker.Invoke));
+            var invoke = typeof(IReflectionInvoker).GetMethod(nameof(IReflectionInvoker.Invoke));
             var targetDef = target;
             var parentDef = parent;
             var getTypeFromHandle = typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle));
-            var getMethodFromHandle = typeof(MethodBase).GetMethod(nameof(MethodBase.GetMethodFromHandle), new[] { typeof(RuntimeMethodHandle) });
+            var getMethodFromHandle = typeof(MethodBase).GetMethod(nameof(MethodBase.GetMethodFromHandle), new[] { typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle) });
             var makeGenericMethod = typeof(Type).GetMethod(nameof(Type.MakeGenericType));
             var newNotImplementedException = typeof(NotImplementedException).GetConstructor(new Type[] { });
 
-            var typ = RuntimeAssembly.ModuleBuilder.DefineType($"{target.Name}Proxy");
+            var typ = RuntimeAssembly.DefineType($"Alsein.Utilities.GeneratedProxies.{parent.Name}For{target.Name}");
             if (target.IsGenericTypeDefinition)
             {
                 var pGenParams = target.GetGenericArguments();
@@ -213,6 +213,7 @@ namespace Alsein.Utilities.Runtime.Internal
                     // this.Invoke(i, ilVArgs);
                     il.Emit(OpCodes.Ldarg_0);
                     il.Emit(OpCodes.Ldtoken, methodInfo);
+                    il.Emit(OpCodes.Ldtoken, targetDef);
                     il.Emit(OpCodes.Call, getMethodFromHandle);
                     if (tArgTypes.Length > 0)
                     {
@@ -227,7 +228,7 @@ namespace Alsein.Utilities.Runtime.Internal
                     {
                         il.Emit(OpCodes.Pop);
                     }
-                    if (methodInfo.ReturnType.IsValueType)
+                    else if (methodInfo.ReturnType.IsValueType)
                     {
                         il.Emit(OpCodes.Unbox_Any, methodInfo.ReturnType);
                     }

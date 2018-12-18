@@ -1,0 +1,12 @@
+<Project>
+
+  <PropertyGroup>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <EnableApiCheck>false</EnableApiCheck>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>8021</NoWarn>
+  </PropertyGroup>
+
+</Project>

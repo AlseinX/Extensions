@@ -11,8 +11,8 @@ namespace Alsein.Utilities.Runtime
         /// 
         /// </summary>
         /// <param name="method"></param>
-        /// <param name="valueArgs"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
-        object Invoke(MethodInfo method, params object[] valueArgs);
+        object Invoke(MethodInfo method, params object[] args);
     }
 }

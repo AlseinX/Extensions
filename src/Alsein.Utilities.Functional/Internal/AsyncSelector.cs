@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alsein.Utilities.Internal
+namespace Alsein.Utilities.RuntimeInternal
 {
     internal class AsyncSelector<TSource, TResult> : IAsyncEnumerable<TResult>
     {

@@ -1,4 +1,4 @@
-namespace Alsein.Utilities.Internal
+namespace Alsein.Utilities.RuntimeInternal
 {
     internal class FailableResult<TResult> : IFailableResult<TResult>
     {
