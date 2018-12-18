@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Alsein.Utilities.Runtime.ReflectionInvokers;
+using System;
+using System.Reflection;
 
 namespace Alsein.Utilities.Runtime.InteropServices
 {
@@ -21,6 +23,48 @@ namespace Alsein.Utilities.Runtime.InteropServices
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static INativeModule LoadAssembly(string filename) => NativeModuleFactory.LoadAssembly(filename);
+        public static INativeModule LoadModule(string filename) => NativeModuleFactory.LoadAssembly(filename);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="replacementOptions"></param>
+        /// <returns></returns>
+        public static T LoadModule<T>(NativeModuleAttribute replacementOptions = null)
+        {
+            var options = typeof(T).GetCustomAttribute<NativeModuleAttribute>();
+            return typeof(WrapperReflectionInvoker).GetImplementationOf(typeof(T)).New<T>(new Internal.NativeModuleDispatcher(NativeModuleFactory.LoadAssembly(replacementOptions.Path ?? options.Path ?? typeof(T).Name), replacementOptions));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static T LoadModule<T>(string filename) => LoadModule<T>(new NativeModuleAttribute { Path = filename });
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="factory"></param>
+        /// <param name="replacementOptions"></param>
+        /// <returns></returns>
+        public static T LoadModule<T>(this INativeModuleFactory factory, NativeModuleAttribute replacementOptions = null)
+        {
+            var options = typeof(T).GetCustomAttribute<NativeModuleAttribute>();
+            return typeof(WrapperReflectionInvoker).GetImplementationOf(typeof(T)).New<T>(new Internal.NativeModuleDispatcher(factory.LoadModule(replacementOptions.Path ?? options.Path ?? typeof(T).Name), replacementOptions));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="factory"></param>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static T LoadModule<T>(this INativeModuleFactory factory, string filename) => factory.LoadModule<T>(new NativeModuleAttribute { Path = filename });
     }
 }

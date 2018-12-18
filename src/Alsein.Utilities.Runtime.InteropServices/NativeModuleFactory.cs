@@ -26,6 +26,6 @@ namespace Alsein.Utilities.Runtime.InteropServices
             throw new PlatformNotSupportedException();
         }
 
-        INativeModule INativeModuleFactory.LoadAssembly(string filename) => LoadAssembly(filename);
+        INativeModule INativeModuleFactory.LoadModule(string filename) => LoadAssembly(filename);
     }
 }

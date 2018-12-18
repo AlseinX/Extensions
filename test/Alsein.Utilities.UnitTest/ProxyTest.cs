@@ -64,7 +64,7 @@ namespace Alsein.Utilities.Test
         public void NativeTest()
         {
             var factory = new NativeModuleFactory();
-            var ncurses = factory.LoadAssembly<ILibNCurse6>(new NativeModuleAttribute { Path = "D:\\libncursesw6.dll" });
+            var ncurses = factory.LoadModule<ILibNCurse6>(new NativeModuleAttribute { Path = "D:\\libncursesw6.dll" });
             ncurses.initscr();
         }
 

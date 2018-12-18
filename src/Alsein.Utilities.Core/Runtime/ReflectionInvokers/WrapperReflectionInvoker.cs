@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 
-namespace Alsein.Utilities.Runtime
+namespace Alsein.Utilities.Runtime.ReflectionInvokers
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ReflectionInvokerWrapper : IReflectionInvoker
+    public class WrapperReflectionInvoker : IReflectionInvoker
     {
         private readonly IReflectionInvoker _target;
 
@@ -13,7 +13,7 @@ namespace Alsein.Utilities.Runtime
         /// 
         /// </summary>
         /// <param name="target"></param>
-        public ReflectionInvokerWrapper(IReflectionInvoker target) => _target = target;
+        public WrapperReflectionInvoker(IReflectionInvoker target) => _target = target;
 
         /// <summary>
         /// 

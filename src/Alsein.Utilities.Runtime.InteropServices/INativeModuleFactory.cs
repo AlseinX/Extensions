@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        INativeModule LoadAssembly(string filename);
+        INativeModule LoadModule(string filename);
     }
 }

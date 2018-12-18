@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
+    <ProjectReference Include="..\Alsein.Utilities.Runtime.Proxy\Alsein.Utilities.Runtime.Proxy.csproj" />
   </ItemGroup>
 
 </Project>

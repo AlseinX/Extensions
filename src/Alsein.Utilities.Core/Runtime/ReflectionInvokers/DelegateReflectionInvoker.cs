@@ -1,21 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
-namespace Alsein.Utilities.Runtime.DynamicInvokers
+namespace Alsein.Utilities.Runtime.ReflectionInvokers
 {
     /// <summary>
     /// 
     /// </summary>
-    public class DelegateDynamicInvoker : IReflectionInvoker
+    public class DelegateReflectionInvoker : IReflectionInvoker
     {
         private readonly IReadOnlyDictionary<MethodInfo, Delegate> _implements;
 
         /// <summary>
         /// 
         /// </summary>
-        public DelegateDynamicInvoker(IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
+        public DelegateReflectionInvoker(IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
         {
             if (implements is IReadOnlyDictionary<MethodInfo, Delegate> value)
             {

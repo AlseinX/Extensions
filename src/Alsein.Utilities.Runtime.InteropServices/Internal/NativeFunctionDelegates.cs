@@ -27,7 +27,8 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
                 SetLastError = funcOptions?.SetLastError ?? replacementOptions?.SetLastError ?? moduleOptions?.SetLastError ?? true,
                 ThrowOnUnmappableChar = funcOptions?.ThrowOnUnmappableChar ?? replacementOptions?.ThrowOnUnmappableChar ?? moduleOptions?.ThrowOnUnmappableChar ?? false
             };
-            var paramTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+            var paramsInfo = method.GetParameters();
+            var paramTypes = paramsInfo.Select(p => p.ParameterType).ToArray();
 
             var target = RuntimeAssembly.DefineType(
                 $"Alsein.Utilities.Runtime.GeneratedNativeModules.{method.DeclaringType.FullName}.{method.Name}",
@@ -56,6 +57,12 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
                     typeof(AsyncCallback),
                     typeof(object)
                 }).ToArray());
+
+            for (var i = 0; i < paramsInfo.Length; i++)
+            {
+                beginInvoke.DefineParameter(i + 3, paramsInfo[i].Attributes, paramsInfo[i].Name);
+            }
+
             beginInvoke.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
             var endInvoke = target.DefineMethod("EndInvoke",
@@ -65,6 +72,7 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
                 MethodAttributes.Virtual,
                 method.ReturnType,
                 new[] { typeof(IAsyncResult) });
+
             endInvoke.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
             var invoke = target.DefineMethod("Invoke",
@@ -75,6 +83,11 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
                 CallingConventions.Standard,
                 method.ReturnType,
                 paramTypes);
+
+            for (var i = 0; i < paramsInfo.Length; i++)
+            {
+                invoke.DefineParameter(i + 1, paramsInfo[i].Attributes, paramsInfo[i].Name);
+            }
 
             invoke.SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
