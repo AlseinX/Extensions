@@ -9,11 +9,15 @@
   <ItemGroup Condition=" '$(RuntimeIdentifier)' != '' ">
 
     <NativeLibs Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/*.dll" />
+    <NativeLibs Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/*.so" />
+    <NativeLibs Include="$(MSBuildThisFileDirectory)../runtimes/$(RuntimeIdentifier)/native/*.so.*" />
     <None Include="@(NativeLibs)">
-      <Link>%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Native Libraries\%(FileName)%(Extension)</Link>
     </None>
-
+    <ContentWithTargetPath Include="@(NativeLibs)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>%(FileName)%(Extension)</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <NativeLibs Include="$(MSBuildProjectDirectory)\lib\**\*.dll" />
+    <NativeLibs Include="$(MSBuildProjectDirectory)\lib\**\*.so" />
+    <NativeLibs Include="$(MSBuildProjectDirectory)\lib\**\*.so.*" />
     <Content Include="@(NativeLibs)" PackagePath="runtimes\%(RecursiveDir)native\%(FileName)%(Extension)">
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)OutputNativePackage.props" PackagePath="build/$(MSBuildProjectName).props" />
