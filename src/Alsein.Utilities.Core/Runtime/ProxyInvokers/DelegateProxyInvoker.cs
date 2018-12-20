@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Alsein.Utilities.Runtime.ReflectionInvokers
+namespace Alsein.Utilities.Runtime.ProxyInvokers
 {
     /// <summary>
     /// 
     /// </summary>
-    public class DelegateReflectionInvoker : IReflectionInvoker
+    public class DelegateProxyInvoker : IProxyInvoker
     {
         private readonly IReadOnlyDictionary<MethodInfo, Delegate> _implements;
 
         /// <summary>
         /// 
         /// </summary>
-        public DelegateReflectionInvoker(IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
+        public DelegateProxyInvoker(IEnumerable<KeyValuePair<MethodInfo, Delegate>> implements)
         {
             if (implements is IReadOnlyDictionary<MethodInfo, Delegate> value)
             {

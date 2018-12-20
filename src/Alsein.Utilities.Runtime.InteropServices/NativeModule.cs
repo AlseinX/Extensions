@@ -1,4 +1,4 @@
-﻿using Alsein.Utilities.Runtime.ReflectionInvokers;
+﻿using Alsein.Utilities.Runtime.ProxyInvokers;
 using System;
 using System.Reflection;
 
@@ -34,7 +34,7 @@ namespace Alsein.Utilities.Runtime.InteropServices
         public static T LoadModule<T>(NativeModuleAttribute replacementOptions = null)
         {
             var options = typeof(T).GetCustomAttribute<NativeModuleAttribute>();
-            return typeof(WrapperReflectionInvoker).GetImplementationOf(typeof(T)).New<T>(new Internal.NativeModuleDispatcher(NativeModuleFactory.LoadAssembly(replacementOptions.Path ?? options.Path ?? typeof(T).Name), replacementOptions));
+            return typeof(WrapperProxyInvoker).GetImplementationOf(typeof(T)).New<T>(new Internal.NativeModuleDispatcher(NativeModuleFactory.LoadAssembly(replacementOptions.Path ?? options.Path ?? typeof(T).Name), replacementOptions));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Alsein.Utilities.Runtime.InteropServices
         public static T LoadModule<T>(this INativeModuleFactory factory, NativeModuleAttribute replacementOptions = null)
         {
             var options = typeof(T).GetCustomAttribute<NativeModuleAttribute>();
-            return typeof(WrapperReflectionInvoker).GetImplementationOf(typeof(T)).New<T>(new Internal.NativeModuleDispatcher(factory.LoadModule(replacementOptions.Path ?? options.Path ?? typeof(T).Name), replacementOptions));
+            return typeof(WrapperProxyInvoker).GetImplementationOf(typeof(T)).New<T>(new Internal.NativeModuleDispatcher(factory.LoadModule(replacementOptions.Path ?? options.Path ?? typeof(T).Name), replacementOptions));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Alsein.Utilities.Runtime.InteropServices
         {
             switch (module)
             {
-                case WrapperReflectionInvoker wrapper
+                case WrapperProxyInvoker wrapper
                     when wrapper.Target is INativeModule target:
                     return target;
                 case INativeModule result:

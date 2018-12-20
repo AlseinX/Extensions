@@ -17,7 +17,7 @@ namespace Alsein.Utilities.Runtime.Internal
                 throw new InvalidOperationException("The target type must be an interface.");
             }
 
-            if (typeof(IReflectionInvoker).IsAssignableFrom(target))
+            if (typeof(IProxyInvoker).IsAssignableFrom(target))
             {
                 throw new InvalidOperationException("The target type must not implement IReflectionInvoker.");
             }
@@ -46,8 +46,8 @@ namespace Alsein.Utilities.Runtime.Internal
 
         private static TypeInfo BuildType(Type target, Type parent)
         {
-            var isInvoker = parent.GetInterfaces().Contains(typeof(IReflectionInvoker));
-            var invoke = typeof(IReflectionInvoker).GetMethod(nameof(IReflectionInvoker.Invoke));
+            var isInvoker = parent.GetInterfaces().Contains(typeof(IProxyInvoker));
+            var invoke = typeof(IProxyInvoker).GetMethod(nameof(IProxyInvoker.Invoke));
             var targetDef = target;
             var parentDef = parent;
 

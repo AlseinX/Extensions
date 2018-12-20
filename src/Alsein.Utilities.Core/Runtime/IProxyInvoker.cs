@@ -5,7 +5,7 @@ namespace Alsein.Utilities.Runtime
     /// <summary>
     /// 
     /// </summary>
-    public interface IReflectionInvoker
+    public interface IProxyInvoker
     {
         /// <summary>
         /// 

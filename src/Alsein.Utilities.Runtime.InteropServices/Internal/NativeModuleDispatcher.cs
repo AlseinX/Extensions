@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Alsein.Utilities.Runtime.InteropServices.Internal
 {
-    internal class NativeModuleDispatcher : INativeModule, IReflectionInvoker
+    internal class NativeModuleDispatcher : INativeModule, IProxyInvoker
     {
         private readonly INativeModule _nativeModule;
 
@@ -37,7 +37,7 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
 
         private readonly IDictionary<MethodInfo, Delegate> _funcs;
 
-        IArguments IReflectionInvoker.Invoke(MethodInfo method, IArguments args)
+        IArguments IProxyInvoker.Invoke(MethodInfo method, IArguments args)
         {
             var entryPoint = method.GetCustomAttribute<NativeFunctionAttribute>()?.EntryPoint ?? method.Name;
             if (method.IsSpecialName)

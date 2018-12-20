@@ -1,22 +1,22 @@
 ﻿using System.Reflection;
 
-namespace Alsein.Utilities.Runtime.ReflectionInvokers
+namespace Alsein.Utilities.Runtime.ProxyInvokers
 {
     /// <summary>
     /// 
     /// </summary>
-    public class WrapperReflectionInvoker : IReflectionInvoker
+    public class WrapperProxyInvoker : IProxyInvoker
     {
         /// <summary>
         /// 
         /// </summary>
-        public IReflectionInvoker Target { get; }
+        public IProxyInvoker Target { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="target"></param>
-        public WrapperReflectionInvoker(IReflectionInvoker target) => Target = target;
+        public WrapperProxyInvoker(IProxyInvoker target) => Target = target;
 
         /// <summary>
         /// 

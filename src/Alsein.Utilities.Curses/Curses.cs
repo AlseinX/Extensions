@@ -52,12 +52,6 @@ namespace Alsein.Utilities.Curses
             NativeModule.Parse(LibCurses).Disposing += (s, e) => ((ILibCurses)s).endwin();
             LibCurses.initscr();
 
-            var xx = new AttrChar('我', CharAttributes.Reverse);
-            var zz = new AttrChar('\u00A0', CharAttributes.Reverse);
-
-
-            LibCurses.add_wch(ref xx);
-            LibCurses.add_wch(ref zz);
             StandardScreen = new Window(LibCurses.stdscr);
         }
 

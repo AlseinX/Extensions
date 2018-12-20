@@ -25,7 +25,7 @@ namespace Alsein.Utilities.Test
 
     }
 
-    public class ProxyTest<T> : IReflectionInvoker where T : struct
+    public class ProxyTest<T> : IProxyInvoker where T : struct
     {
         public ProxyTest(T value, out string aaa)
         {
