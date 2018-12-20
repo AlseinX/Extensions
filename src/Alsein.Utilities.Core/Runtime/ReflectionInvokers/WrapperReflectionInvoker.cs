@@ -7,13 +7,16 @@ namespace Alsein.Utilities.Runtime.ReflectionInvokers
     /// </summary>
     public class WrapperReflectionInvoker : IReflectionInvoker
     {
-        private readonly IReflectionInvoker _target;
+        /// <summary>
+        /// 
+        /// </summary>
+        public IReflectionInvoker Target { get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="target"></param>
-        public WrapperReflectionInvoker(IReflectionInvoker target) => _target = target;
+        public WrapperReflectionInvoker(IReflectionInvoker target) => Target = target;
 
         /// <summary>
         /// 
@@ -21,6 +24,6 @@ namespace Alsein.Utilities.Runtime.ReflectionInvokers
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public object Invoke(MethodInfo method, params object[] args) => _target.Invoke(method, args);
+        public IArguments Invoke(MethodInfo method, IArguments args) => Target.Invoke(method, args);
     }
 }

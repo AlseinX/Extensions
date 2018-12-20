@@ -66,5 +66,24 @@ namespace Alsein.Utilities.Runtime.InteropServices
         /// <param name="filename"></param>
         /// <returns></returns>
         public static T LoadModule<T>(this INativeModuleFactory factory, string filename) => factory.LoadModule<T>(new NativeModuleAttribute { Path = filename });
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
+        public static INativeModule Parse(object module)
+        {
+            switch (module)
+            {
+                case WrapperReflectionInvoker wrapper
+                    when wrapper.Target is INativeModule target:
+                    return target;
+                case INativeModule result:
+                    return result;
+                default:
+                    throw new InvalidCastException("The object is not an INativeModule");
+            }
+        }
     }
 }

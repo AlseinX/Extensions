@@ -26,6 +26,8 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
             return Marshal.GetDelegateForFunctionPointer(proc, delegateType);
         }
 
+        protected override IntPtr GetGlobalVariable(string variableName) => DlSym(_module, variableName);
+
         protected override void Dispose() => DlClose(_module);
 
         [DllImport(DYLIB_NAME, EntryPoint = "dlopen", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]

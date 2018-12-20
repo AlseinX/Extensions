@@ -1,5 +1,4 @@
 using Alsein.Utilities.Runtime;
-using Alsein.Utilities.Runtime.InteropServices;
 using System;
 using System.Reflection;
 using Xunit;
@@ -20,6 +19,10 @@ namespace Alsein.Utilities.Test
 
         void Run();
 
+        void Add(ref int a);
+
+        ref int GetFirst(int[] arr);
+
     }
 
     public class ProxyTest<T> : IReflectionInvoker where T : struct
@@ -38,7 +41,16 @@ namespace Alsein.Utilities.Test
 
         public string GetName<TT>() => typeof(TT).Name;
 
-        public object Invoke(MethodInfo method, params object[] args) => null;
+        public IArguments Invoke(MethodInfo method, IArguments args)
+        {
+            if (method.Name == "Add")
+            {
+                args.At<int>(0)++;
+            }
+            return null;
+        }
+
+        public ref int GetFirst(int[] arr) => ref arr[0];
     }
 
     public class ProxyTestRunner
@@ -49,6 +61,12 @@ namespace Alsein.Utilities.Test
             var args = new object[] { 23, null };
             var b = typeof(ProxyTest<>).GetImplementationOf(typeof(IProxyTest<>)).MakeGenericType<int>().New<IProxyTest<int>>(args);
             b.Run();
+            var x = 1;
+            b.Add(ref x);
+            var y = new[] { 5 };
+            b.GetFirst(y) = 6;
+            Assert.Equal(2, x);
+            Assert.Equal(new[] { 6 }, y);
             Assert.Equal("bbb", args[1]);
             Assert.Equal((3, 2), b.Rebel((2, 3)));
             Assert.Equal(23, b.Value);
@@ -59,24 +77,5 @@ namespace Alsein.Utilities.Test
                 _ = b.Yeah;
             });
         }
-
-        [Fact]
-        public void NativeTest()
-        {
-            var factory = new NativeModuleFactory();
-            var ncurses = factory.LoadModule<ILibNCurse6>(new NativeModuleAttribute { Path = "D:\\libncursesw6.dll" });
-            ncurses.initscr();
-        }
-
-        [NativeModule]
-        public interface ILibNCurse6
-        {
-            void initscr();
-            void endwin();
-            void refresh();
-            void getch();
-            void printw(string format);
-        }
-
     }
 }

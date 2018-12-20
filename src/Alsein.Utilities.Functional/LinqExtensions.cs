@@ -1,8 +1,7 @@
+using Alsein.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Alsein.Utilities.Extensions;
 
 namespace Alsein.Utilities
 {
@@ -11,6 +10,17 @@ namespace Alsein.Utilities
     /// </summary>
     public static partial class LinqExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <param name="exceptionFactory"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TSource, Exception> exceptionFactory) =>
+            source.Select(item => predicate(item) ? item : throw exceptionFactory(item));
+
         /// <summary>
         /// 
         /// </summary>
@@ -189,8 +199,10 @@ namespace Alsein.Utilities
         public static IEnumerable<TSource> PosteritiesOf<TSource>(this IEnumerable<TSource> source, TSource target, Func<TSource, TSource> recurser)
         {
             source = source.ToArray();
-            var found = new List<TSource>();
-            found.Add(target);
+            var found = new List<TSource>
+        {
+            target
+        };
         start:
             foreach (var item in source)
             {

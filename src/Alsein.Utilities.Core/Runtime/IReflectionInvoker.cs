@@ -13,6 +13,6 @@ namespace Alsein.Utilities.Runtime
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        object Invoke(MethodInfo method, params object[] args);
+        IArguments Invoke(MethodInfo method, IArguments args);
     }
 }

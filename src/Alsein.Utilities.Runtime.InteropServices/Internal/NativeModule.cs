@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Alsein.Utilities.Runtime.InteropServices.Internal
 {
@@ -15,10 +16,34 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
             return delegates.GetOrCreate(d => d.GetType() == delegateType, () => GetFunction(functionName, delegateType));
         }
 
+        object INativeModule.GetGlobalVariable(string variableName, Type valueType)
+        {
+            if (!valueType.IsValueType)
+            {
+                throw new ArgumentException("The type must be a value type.");
+            }
+            return Marshal.PtrToStructure(GetGlobalVariable(variableName), valueType);
+        }
+
+        void INativeModule.SetGlobalVariable(string variableName, object value)
+        {
+            if (!value.GetType().IsValueType)
+            {
+                throw new ArgumentException("The type must be a value type.");
+            }
+            Marshal.StructureToPtr(value, GetGlobalVariable(variableName), false);
+        }
+
         protected abstract Delegate GetFunction(string functionName, Type delegateType);
+
+        protected abstract IntPtr GetGlobalVariable(string variableName);
 
         #region IDisposable Support
         private bool _disposedValue = false;
+
+        public event Action<INativeModule, EventArgs> Disposing;
+
+        public event Action<INativeModule, EventArgs> Disposed;
 
         protected abstract void Dispose();
 
@@ -28,11 +53,12 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
         {
             if (!_disposedValue)
             {
-                Dispose();
                 _disposedValue = true;
+                Disposing?.Invoke(this, new EventArgs { });
+                Dispose();
+                Disposed?.Invoke(this, new EventArgs { });
             }
         }
-
         #endregion
     }
 }

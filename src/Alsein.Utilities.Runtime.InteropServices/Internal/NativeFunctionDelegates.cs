@@ -13,7 +13,8 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
     {
         private static readonly IDictionary<MethodInfo, Type> _delegates = new ConcurrentDictionary<MethodInfo, Type>();
 
-        public static Type GetDelegateTypeFor(MethodInfo method, NativeModuleAttribute replacementOptions) => _delegates.GetOrCreate(method, () => GenerateDelegateFor(method, replacementOptions));
+        public static Type GetDelegateTypeFor(MethodInfo method, NativeModuleAttribute replacementOptions) =>
+            _delegates.GetOrCreate(method, () => GenerateDelegateFor(method, replacementOptions));
 
         private static Type GenerateDelegateFor(MethodInfo method, NativeModuleAttribute replacementOptions)
         {

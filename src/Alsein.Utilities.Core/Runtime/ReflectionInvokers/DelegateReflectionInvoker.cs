@@ -37,14 +37,14 @@ namespace Alsein.Utilities.Runtime.ReflectionInvokers
         /// <param name="method"></param>
         /// <param name="valueArgs"></param>
         /// <returns></returns>
-        public object Invoke(MethodInfo method, object[] valueArgs)
+        public IArguments Invoke(MethodInfo method, IArguments valueArgs)
         {
             switch (_implements[method])
             {
                 case VariableArgsHandler handler:
                     return handler(valueArgs);
                 case Delegate handler:
-                    return handler.DynamicInvoke(valueArgs);
+                    return valueArgs.Invoke(handler);
                 default:
                     throw new NotImplementedException();
             }

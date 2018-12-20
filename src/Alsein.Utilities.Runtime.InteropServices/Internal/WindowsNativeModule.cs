@@ -32,6 +32,8 @@ namespace Alsein.Utilities.Runtime.InteropServices.Internal
             return Marshal.GetDelegateForFunctionPointer(proc, delegateType);
         }
 
+        protected override IntPtr GetGlobalVariable(string variableName) => GetProcAddress(_module, variableName);
+
         protected override void Dispose() => FreeLibrary(_module);
 
         [DllImport(DLL_NAME, EntryPoint = "LoadLibraryW", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]

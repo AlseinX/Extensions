@@ -50,6 +50,12 @@ namespace Alsein.Utilities.Runtime.Internal
             var invoke = typeof(IReflectionInvoker).GetMethod(nameof(IReflectionInvoker.Invoke));
             var targetDef = target;
             var parentDef = parent;
+
+            var newArgumentsBuilder = typeof(ArgumentsBuilder).GetConstructor(new[] { typeof(int) });
+            var setByVal = typeof(ArgumentsBuilder).GetMethod(nameof(ArgumentsBuilder.SetByVal), m => m.ContainsGenericParameters);
+            var setByRef = typeof(ArgumentsBuilder).GetMethod(nameof(ArgumentsBuilder.SetByRef));
+            var build = typeof(ArgumentsBuilder).GetMethod(nameof(ArgumentsBuilder.Build));
+            var at = typeof(IArguments).GetMethod(nameof(IArguments.At));
             var getTypeFromHandle = typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle));
             var getMethodFromHandle = typeof(MethodBase).GetMethod(nameof(MethodBase.GetMethodFromHandle), new[] { typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle) });
             var makeGenericMethod = typeof(Type).GetMethod(nameof(Type.MakeGenericType));
@@ -132,7 +138,8 @@ namespace Alsein.Utilities.Runtime.Internal
                 var methodInfo = methods[i];
                 var match = parentDef.GetMethods().SingleOrDefault(m => SignatureEqual(m, methodInfo));
                 var tArgTypes = new GenericTypeParameterBuilder[] { };
-                var vArgTypes = methodInfo.GetParameters().Select(p => p.ParameterType).ToArray();
+                var paras = methodInfo.GetParameters();
+                var vArgTypes = paras.Select(p => p.ParameterType).ToArray();
                 var mtd = typ.DefineMethod
                 (
                     name: methodInfo.Name,
@@ -145,6 +152,14 @@ namespace Alsein.Utilities.Runtime.Internal
                 {
                     tArgTypes = mtd.DefineGenericParameters(methodInfo.GetGenericArguments().Select(t => $"{t.Name}").ToArray());
                 }
+
+                var k = 1;
+                foreach (var para in paras)
+                {
+                    mtd.DefineParameter(k, para.Attributes, para.Name);
+                    k++;
+                }
+
                 var il = mtd.GetILGenerator();
 
                 if (match != null)
@@ -188,29 +203,30 @@ namespace Alsein.Utilities.Runtime.Internal
                         }
                     }
 
-                    // object[] vArgs;
-                    var vArgs = il.DeclareLocal(typeof(object[]));
+                    // ArgumentListBuilder ilVArgs;
+                    var vArgs = il.DeclareLocal(typeof(ArgumentsBuilder));
 
 
-                    // ilVArgs = new object[vArgs.Length];
+                    // ilVArgs = new ArgumentsBuilder(vArgs.Length);
                     il.Emit(OpCodes.Ldc_I4, vArgTypes.Length);
-                    il.Emit(OpCodes.Newarr, typeof(object));
-                    il.Emit(OpCodes.Stloc, vArgs);
+                    il.Emit(OpCodes.Newobj, newArgumentsBuilder);
 
                     for (var j = 0; j < vArgTypes.Length; j++)
                     {
-                        // ilVArgs[j] = (object)Arguments[j];
-                        il.Emit(OpCodes.Ldloc, vArgs);
+                        // .SetByVal/Ref<T>(j, Arguments[j + 1])
                         il.Emit(OpCodes.Ldc_I4, j);
                         il.Emit(OpCodes.Ldarg, j + 1);
-                        if (vArgTypes[j].IsValueType)
-                        {
-                            il.Emit(OpCodes.Box, vArgTypes[j]);
-                        }
-                        il.Emit(OpCodes.Stelem_Ref);
+
+                        var setBy = vArgTypes[j].IsByRef ?
+                            setByRef.MakeGenericMethod(vArgTypes[j].GetElementType()) :
+                            setByVal.MakeGenericMethod(vArgTypes[j]);
+
+                        il.Emit(OpCodes.Call, setBy);
                     }
 
-                    // this.Invoke(i, ilVArgs);
+                    il.Emit(OpCodes.Stloc, vArgs);
+
+                    // this.Invoke(i, ilVArgs.Build());
                     il.Emit(OpCodes.Ldarg_0);
                     il.Emit(OpCodes.Ldtoken, methodInfo);
                     il.Emit(OpCodes.Ldtoken, targetDef);
@@ -221,6 +237,7 @@ namespace Alsein.Utilities.Runtime.Internal
                         il.Emit(OpCodes.Call, makeGenericMethod);
                     }
                     il.Emit(OpCodes.Ldloc, vArgs);
+                    il.Emit(OpCodes.Call, build);
                     il.Emit(OpCodes.Callvirt, invoke);
 
                     // return ?;
@@ -228,10 +245,27 @@ namespace Alsein.Utilities.Runtime.Internal
                     {
                         il.Emit(OpCodes.Pop);
                     }
-                    else if (methodInfo.ReturnType.IsValueType)
+                    else
                     {
-                        il.Emit(OpCodes.Unbox_Any, methodInfo.ReturnType);
+                        il.Emit(OpCodes.Ldc_I4_0);
+                        if (methodInfo.ReturnType.IsByRef)
+                        {
+                            il.Emit(OpCodes.Callvirt, at.MakeGenericMethod(methodInfo.ReturnType.GetElementType()));
+                        }
+                        else
+                        {
+                            il.Emit(OpCodes.Callvirt, at.MakeGenericMethod(methodInfo.ReturnType));
+                            if (methodInfo.ReturnType.IsValueType)
+                            {
+                                il.Emit(OpCodes.Ldobj, methodInfo.ReturnType);
+                            }
+                            else
+                            {
+                                il.Emit(OpCodes.Ldind_Ref);
+                            }
+                        }
                     }
+
                     il.Emit(OpCodes.Ret);
                 }
 

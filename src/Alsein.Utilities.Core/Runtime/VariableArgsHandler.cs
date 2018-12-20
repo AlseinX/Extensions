@@ -1,11 +1,9 @@
-using System;
-
 namespace Alsein.Utilities.Runtime
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="valueArgs"></param>
+    /// <param name="args"></param>
     /// <returns></returns>
-    public delegate object VariableArgsHandler(object[] valueArgs);
+    public delegate IArguments VariableArgsHandler(IArguments args);
 }
