@@ -1,5 +1,6 @@
-﻿using System;
-using static Alsein.Utilities.Curses.Curses;
+﻿using Alsein.Utilities.Runtime.InteropServices;
+using System;
+using static Alsein.Utilities.Curses.Internal.LibCurses;
 
 namespace Alsein.Utilities.Curses
 {
@@ -20,13 +21,13 @@ namespace Alsein.Utilities.Curses
         {
             get
             {
-                LibCurses.scrollok(_window, _allowScroll);
+                P<scrollok>.Invoke(_window, _allowScroll);
                 return _allowScroll;
             }
 
             set
             {
-                LibCurses.scrollok(_window, value);
+                P<scrollok>.Invoke(_window, value);
                 _allowScroll = value;
             }
         }
@@ -35,26 +36,26 @@ namespace Alsein.Utilities.Curses
         /// 
         /// </summary>
         /// <returns></returns>
-        public int GetChar() => LibCurses.wgetch(_window);
+        public int GetChar() => P<wgetch>.Invoke(_window);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="y"></param>
         /// <param name="x"></param>
-        public void Move(int y, int x) => LibCurses.wmove(_window, y, x);
+        public void Move(int y, int x) => P<wmove>.Invoke(_window, y, x);
 
         /// <summary>
         /// 
         /// </summary>
-        public void Refresh() => LibCurses.wrefresh(_window);
+        public void Refresh() => P<wrefresh>.Invoke(_window);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
         public void Write(string value) =>
-            LibCurses.wprintw(_window, "%s", value);
+            P<wprintw>.Invoke(_window, "%s", value);
 
         /// <summary>
         /// 
@@ -62,7 +63,7 @@ namespace Alsein.Utilities.Curses
         /// <typeparam name="TValue"></typeparam>
         /// <param name="value"></param>
         public void Write<TValue>(TValue value) =>
-            LibCurses.wprintw(_window, "%s", value.ToString());
+            P<wprintw>.Invoke(_window, "%s", value.ToString());
 
         /// <summary>
         /// 
@@ -70,27 +71,27 @@ namespace Alsein.Utilities.Curses
         /// <param name="format"></param>
         /// <param name="arg"></param>
         public void Write(string format, params object[] arg) =>
-            LibCurses.wprintw(_window, "%s", string.Format(format, arg));
+            P<wprintw>.Invoke(_window, "%s", string.Format(format, arg));
 
         /// <summary>
         /// 
         /// </summary>
         public void WriteLine() =>
-            LibCurses.wprintw(_window, "\n");
+            P<wprintw>.Invoke(_window, "%s", "\n");
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
         public void WriteLine(string value) =>
-            LibCurses.wprintw(_window, "%s\n", value);
+            P<wprintw>.Invoke(_window, "%s\n", value);
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="value"></param>
         public void WriteLine<TValue>(TValue value) =>
-            LibCurses.wprintw(_window, "%s\n", value.ToString());
+            P<wprintw>.Invoke(_window, "%s\n", value.ToString());
 
         /// <summary>
         /// 
@@ -98,6 +99,6 @@ namespace Alsein.Utilities.Curses
         /// <param name="format"></param>
         /// <param name="arg"></param>
         public void WriteLine(string format, params object[] arg) =>
-            LibCurses.wprintw(_window, "%s\n", string.Format(format, arg));
+            P<wprintw>.Invoke(_window, "%s\n", string.Format(format, arg));
     }
 }

@@ -9,7 +9,12 @@ namespace Alsein.Utilities.Runtime.InteropServices
     /// </summary>
     public class NativeModuleFactory : INativeModuleFactory
     {
-        internal static INativeModule LoadAssembly(string filename)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static INativeModule LoadModule(string filename)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -26,6 +31,6 @@ namespace Alsein.Utilities.Runtime.InteropServices
             throw new PlatformNotSupportedException();
         }
 
-        INativeModule INativeModuleFactory.LoadModule(string filename) => LoadAssembly(filename);
+        INativeModule INativeModuleFactory.LoadModule(string filename) => LoadModule(filename);
     }
 }

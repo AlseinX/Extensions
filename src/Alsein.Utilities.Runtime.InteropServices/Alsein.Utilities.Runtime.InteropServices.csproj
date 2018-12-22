@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Functional\Alsein.Utilities.Functional.csproj" />
-    <ProjectReference Include="..\Alsein.Utilities.Runtime.Proxy\Alsein.Utilities.Runtime.Proxy.csproj" />
   </ItemGroup>
 
 </Project>

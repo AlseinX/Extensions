@@ -7,10 +7,10 @@ namespace Alsein.Utilities.ConsoleTest
     {
         private static void Main(string[] args)
         {
-            //var win = CreateWindow(0, 0, 20, 10);
-            WriteLine("我爱你");
-            Refresh();
-            GetChar();
+            var win = CreateWindow(2, 2, 20, 10);
+            win.WriteLine("我爱你");
+            win.Refresh();
+            win.GetChar();
         }
     }
 }

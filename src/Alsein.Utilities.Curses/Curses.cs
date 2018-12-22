@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
+using static Alsein.Utilities.Curses.Internal.LibC;
+using static Alsein.Utilities.Curses.Internal.LibCurses;
+
 namespace Alsein.Utilities.Curses
 {
     /// <summary>
@@ -13,9 +16,6 @@ namespace Alsein.Utilities.Curses
     /// </summary>
     public static class Curses
     {
-        internal static ILibCurses LibCurses { get; }
-        private static ILibC LibC { get; }
-
         static Curses()
         {
             var pathCurses = default(string);
@@ -35,24 +35,12 @@ namespace Alsein.Utilities.Curses
                 throw new PlatformNotSupportedException();
             }
 
-            LibCurses = NativeModule.LoadModule<ILibCurses>(new NativeModuleAttribute
-            {
-                Path = pathCurses,
-                CharSet = CharSet.Ansi
-            });
+            P.LoadModule<LibCurses>(pathCurses).Disposing += (s, e) => P<endwin>.Invoke();
+            P.LoadModule<LibC>(pathC);
 
-            LibC = NativeModule.LoadModule<ILibC>(new NativeModuleAttribute
-            {
-                Path = pathC,
-                CharSet = CharSet.Unicode
-            });
+            P<setlocale>.Invoke(0, "");
 
-            LibC.setlocale(0, "");
-
-            NativeModule.Parse(LibCurses).Disposing += (s, e) => ((ILibCurses)s).endwin();
-            LibCurses.initscr();
-
-            StandardScreen = new Window(LibCurses.stdscr);
+            StandardScreen = new Window(P<initscr>.Invoke());
         }
 
 
@@ -65,7 +53,7 @@ namespace Alsein.Utilities.Curses
         /// <param name="height"></param>
         /// <returns></returns>
         public static Window CreateWindow(int x, int y, int width, int height) =>
-            new Window(LibCurses.newwin(height, width, y, x));
+            new Window(P<newwin>.Invoke(height, width, y, x));
 
         /// <summary>
         /// 
@@ -74,7 +62,7 @@ namespace Alsein.Utilities.Curses
         /// <param name="size"></param>
         /// <returns></returns>
         public static Window CreateWindow(Point location, Size size) =>
-            new Window(LibCurses.newwin(size.Height, size.Width, location.Y, location.X));
+            new Window(P<newwin>.Invoke(size.Height, size.Width, location.Y, location.X));
 
         /// <summary>
         /// 
@@ -82,7 +70,7 @@ namespace Alsein.Utilities.Curses
         /// <param name="rect"></param>
         /// <returns></returns>
         public static Window CreateWindow(Rectangle rect) =>
-            new Window(LibCurses.newwin(rect.Height, rect.Width, rect.Y, rect.X));
+            new Window(P<newwin>.Invoke(rect.Height, rect.Width, rect.Y, rect.X));
 
 
         /// <summary>
@@ -95,24 +83,24 @@ namespace Alsein.Utilities.Curses
         /// </summary>
         /// <param name="y"></param>
         /// <param name="x"></param>
-        public static void Move(int x, int y) => LibCurses.move(y, x);
+        public static void Move(int x, int y) => P<move>.Invoke(y, x);
 
         /// <summary>
         /// 
         /// </summary>
-        public static int GetChar() => LibCurses.getch();
+        public static int GetChar() => P<getch>.Invoke();
 
         /// <summary>
         /// 
         /// </summary>
-        public static void Refresh() => LibCurses.refresh();
+        public static void Refresh() => P<refresh>.Invoke();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
         public static void Write(string value) =>
-            LibCurses.printw("%s", value);
+            P<printw>.Invoke("%s", value);
 
         /// <summary>
         /// 
@@ -120,7 +108,7 @@ namespace Alsein.Utilities.Curses
         /// <typeparam name="TValue"></typeparam>
         /// <param name="value"></param>
         public static void Write<TValue>(TValue value) =>
-            LibCurses.printw("%s", value.ToString());
+            P<printw>.Invoke("%s", value.ToString());
 
         /// <summary>
         /// 
@@ -128,20 +116,20 @@ namespace Alsein.Utilities.Curses
         /// <param name="format"></param>
         /// <param name="arg"></param>
         public static void Write(string format, params object[] arg) =>
-            LibCurses.printw("%s", string.Format(format, arg));
+            P<printw>.Invoke("%s", string.Format(format, arg));
 
         /// <summary>
         /// 
         /// </summary>
         public static void WriteLine() =>
-            LibCurses.printw("\n");
+            P<printw>.Invoke("%s", "\n");
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
         public static void WriteLine(string value) =>
-            LibCurses.printw("%s\n", value);
+            P<printw>.Invoke("%s\n", value);
 
         /// <summary>
         /// 
@@ -149,7 +137,7 @@ namespace Alsein.Utilities.Curses
         /// <typeparam name="TValue"></typeparam>
         /// <param name="value"></param>
         public static void WriteLine<TValue>(TValue value) =>
-            LibCurses.printw("%s\n", value.ToString());
+            P<printw>.Invoke("%s\n", value.ToString());
 
         /// <summary>
         /// 
@@ -157,6 +145,6 @@ namespace Alsein.Utilities.Curses
         /// <param name="format"></param>
         /// <param name="arg"></param>
         public static void WriteLine(string format, params object[] arg) =>
-            LibCurses.printw("%s\n", string.Format(format, arg));
+            P<printw>.Invoke("%s\n", string.Format(format, arg));
     }
 }
