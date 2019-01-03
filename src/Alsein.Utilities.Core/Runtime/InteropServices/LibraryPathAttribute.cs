@@ -6,7 +6,7 @@ namespace Alsein.Utilities.Runtime.InteropServices
     /// 
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class LibraryPath : Attribute
+    public class LibraryPathAttribute : Attribute
     {
         /// <summary>
         /// 
@@ -17,6 +17,6 @@ namespace Alsein.Utilities.Runtime.InteropServices
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public LibraryPath(string value) => Value = value;
+        public LibraryPathAttribute(string value) => Value = value;
     }
 }

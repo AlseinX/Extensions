@@ -1,5 +1,5 @@
-﻿using Alsein.Utilities.Extensions;
-using static Alsein.Utilities.Curses.Curses;
+﻿using Alsein.Utilities.Curses;
+using System.Drawing;
 
 namespace Alsein.Utilities.ConsoleTest
 {
@@ -7,10 +7,12 @@ namespace Alsein.Utilities.ConsoleTest
     {
         private static void Main(string[] args)
         {
-            var win = CreateWindow(2, 2, 20, 10);
-            win.WriteLine("我爱你");
-            win.Refresh();
-            win.GetChar();
+            var panel = Curses.Curses.CreatePanel(2, 2, 20, 10);
+            panel.WriteLine("abcde12345");
+        x:
+            panel.GetChar();
+            panel.Location = new Point(panel.Location.X + 1, panel.Location.Y + 1);
+            goto x;
         }
     }
 }

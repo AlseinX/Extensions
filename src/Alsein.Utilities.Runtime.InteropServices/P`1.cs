@@ -12,13 +12,12 @@ namespace Alsein.Utilities.Runtime.InteropServices
         /// <summary>
         /// 
         /// </summary>
-        public static TFunc Invoke
+        public static TFunc Invoke { get; } = GetFunction();
+
+        private static TFunc GetFunction()
         {
-            get
-            {
-                var tFunc = typeof(TFunc);
-                return (TFunc)P.GetModule(tFunc.DeclaringType).GetFunction(tFunc.GetCustomAttribute<EntryPoint>()?.Value ?? tFunc.Name, tFunc);
-            }
+            var tFunc = typeof(TFunc);
+            return (TFunc)P.GetModule(tFunc.DeclaringType).GetFunction(tFunc.GetCustomAttribute<EntryPointAttribute>()?.Value ?? tFunc.Name, tFunc);
         }
     }
 }

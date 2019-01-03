@@ -6,7 +6,7 @@ namespace Alsein.Utilities.Runtime.InteropServices
     /// 
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class EntryPoint : Attribute
+    public class EntryPointAttribute : Attribute
     {
         /// <summary>
         /// 
@@ -17,6 +17,6 @@ namespace Alsein.Utilities.Runtime.InteropServices
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public EntryPoint(string value) => Value = value;
+        public EntryPointAttribute(string value) => Value = value;
     }
 }

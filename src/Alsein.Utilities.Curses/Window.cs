@@ -1,5 +1,6 @@
 ﻿using Alsein.Utilities.Runtime.InteropServices;
 using System;
+
 using static Alsein.Utilities.Curses.Internal.LibCurses;
 
 namespace Alsein.Utilities.Curses
@@ -7,9 +8,10 @@ namespace Alsein.Utilities.Curses
     /// <summary>
     /// 
     /// </summary>
-    public class Window
+    public abstract class Window : IStringWriter
     {
-        private readonly IntPtr _window;
+        private protected readonly IntPtr _window;
+
         private bool _allowScroll = false;
 
         internal Window(IntPtr window) => _window = window;
@@ -48,57 +50,16 @@ namespace Alsein.Utilities.Curses
         /// <summary>
         /// 
         /// </summary>
-        public void Refresh() => P<wrefresh>.Invoke(_window);
+        internal abstract void Refresh();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public void Write(string value) =>
-            P<wprintw>.Invoke(_window, "%s", value);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="value"></param>
-        public void Write<TValue>(TValue value) =>
-            P<wprintw>.Invoke(_window, "%s", value.ToString());
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg"></param>
-        public void Write(string format, params object[] arg) =>
-            P<wprintw>.Invoke(_window, "%s", string.Format(format, arg));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void WriteLine() =>
-            P<wprintw>.Invoke(_window, "%s", "\n");
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        public void WriteLine(string value) =>
-            P<wprintw>.Invoke(_window, "%s\n", value);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="value"></param>
-        public void WriteLine<TValue>(TValue value) =>
-            P<wprintw>.Invoke(_window, "%s\n", value.ToString());
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="format"></param>
-        /// <param name="arg"></param>
-        public void WriteLine(string format, params object[] arg) =>
-            P<wprintw>.Invoke(_window, "%s\n", string.Format(format, arg));
+        public void Write(string value)
+        {
+            P<waddstr>.Invoke(_window, value);
+            Refresh();
+        }
     }
 }

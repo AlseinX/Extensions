@@ -20,7 +20,7 @@ namespace Alsein.Utilities.Runtime.InteropServices
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static INativeModule GetModule(Type type) => Modules.GetOrCreate(type, () => NativeModuleFactory.LoadModule(type.GetCustomAttribute<LibraryPath>().Value));
+        public static INativeModule GetModule(Type type) => Modules.GetOrCreate(type, () => NativeModuleFactory.LoadModule(type.GetCustomAttribute<LibraryPathAttribute>().Value));
 
         /// <summary>
         /// 
