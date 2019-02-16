@@ -1,3 +1,4 @@
+using Alsein.Utilities.Patterns;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Alsein.Utilities.Modulization
@@ -5,12 +6,7 @@ namespace Alsein.Utilities.Modulization
     /// <summary>
     /// 
     /// </summary>
-    public interface IAssemblyManagerBuilder
+    public interface IAssemblyManagerBuilder : IServiceBuilder<IAssemblyManager, AssemblyManagerOptions>
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        IServiceCollection Services { get; }
     }
 }

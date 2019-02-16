@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+using Alsein.Utilities.Modulization;
 
-namespace Alsein.Utilities.Modulization
+namespace Alsein.Utilities
 {
     /// <summary>
     /// 
@@ -18,7 +18,7 @@ namespace Alsein.Utilities.Modulization
         /// <returns></returns>
         public static IAssemblyManagerBuilder WithEntryAssembly(this IAssemblyManagerBuilder builder, Assembly entry)
         {
-            builder.Services.Configure<AssemblyManagerOptions>(option => option.EntryAssembly = entry);
+            builder.Configure(option => option.EntryAssembly = entry);
             return builder;
         }
 
@@ -30,7 +30,7 @@ namespace Alsein.Utilities.Modulization
         /// <returns></returns>
         public static IAssemblyManagerBuilder WithDirectories(this IAssemblyManagerBuilder builder, Action<IList<AssemblyDirectory>> action)
         {
-            builder.Services.Configure<AssemblyManagerOptions>(option => action(option.ExternalDirectories));
+            builder.Configure(option => action(option.ExternalDirectories));
             return builder;
         }
 
@@ -42,7 +42,7 @@ namespace Alsein.Utilities.Modulization
         /// <returns></returns>
         public static IAssemblyManagerBuilder WithFeatureFilters(this IAssemblyManagerBuilder builder, Action<IDictionary<string, Func<Type, bool>>> action)
         {
-            builder.Services.Configure<AssemblyManagerOptions>(option => action(option.FeatureFilters));
+            builder.Configure(option => action(option.FeatureFilters));
             return builder;
         }
 
@@ -54,15 +54,8 @@ namespace Alsein.Utilities.Modulization
         /// <returns></returns>
         public static IAssemblyManagerBuilder WithProjectAssemblyFilter(this IAssemblyManagerBuilder builder, Func<Assembly, bool> filter)
         {
-            builder.Services.Configure<AssemblyManagerOptions>(option => option.ProjectAssemblyFilter = filter);
+            builder.Configure(option => option.ProjectAssemblyFilter = filter);
             return builder;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static IAssemblyManager Build(this IAssemblyManagerBuilder builder) => builder.Services.BuildServiceProvider().GetRequiredService<IAssemblyManager>();
     }
 }

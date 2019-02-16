@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Title>Alsein's .NET Programming Utilities</Title>
     <Description>Some useful utilities for .net programming.</Description>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
