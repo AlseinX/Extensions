@@ -21,7 +21,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/$(GitRepository)/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/$(GitRepository)/master/Alsein.png</PackageIconUrl>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-    <MinClientVersion>3.4</MinClientVersion>
+    <MinClientVersion>4.3</MinClientVersion>
     <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
   </PropertyGroup>
 
