@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Utilities.Core\Alsein.Utilities.Core.csproj" />
@@ -12,8 +12,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Title>Alsein's DI Expansions</Title>
-    <Description>Dependency Injection expansions for Microsoft.Extensions.DependencyInjection</Description>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

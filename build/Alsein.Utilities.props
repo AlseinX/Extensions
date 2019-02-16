@@ -9,6 +9,7 @@
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <RootNamespace>Alsein.Utilities</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>

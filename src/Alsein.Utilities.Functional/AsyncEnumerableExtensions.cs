@@ -17,7 +17,7 @@ namespace Alsein.Utilities
         /// <param name="selector"></param>
         /// <returns></returns>
         public static IAsyncEnumerable<TResult> SelectAsync<TSource, TResult>(this IEnumerable<TSource> sources, Func<TSource, Task<TResult>> selector) =>
-            new RuntimeInternal.AsyncSelector<TSource, TResult>(sources.ToAsyncEnumerable(), selector);
+            new Internal.AsyncSelector<TSource, TResult>(sources.ToAsyncEnumerable(), selector);
 
         /// <summary>
         /// 
@@ -26,7 +26,7 @@ namespace Alsein.Utilities
         /// <param name="selector"></param>
         /// <returns></returns>
         public static IAsyncEnumerable<TResult> SelectAsync<TSource, TResult>(this IAsyncEnumerable<TSource> sources, Func<TSource, Task<TResult>> selector) =>
-            new RuntimeInternal.AsyncSelector<TSource, TResult>(sources, selector);
+            new Internal.AsyncSelector<TSource, TResult>(sources, selector);
 
         /// <summary>
         /// 
