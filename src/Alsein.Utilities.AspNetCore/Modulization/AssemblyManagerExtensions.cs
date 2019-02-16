@@ -19,21 +19,33 @@ namespace Alsein.Utilities.Modulization
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static IAssemblyManagerBuilder WithHubs(this IAssemblyManagerBuilder builder) =>
+            builder.WithFeatureFilters(filters => filters.Add("Hub", type =>
+                type.IsInstantiableClass() &&
+                typeof(Hub).IsAssignableFrom(type) &&
+                type.IsDefined(typeof(RouteAttribute), false)
+            ));
+
+#if NETSTANDARD2_0
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="services"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
         public static IAssemblyManager AddAssemblyManager(this IServiceCollection services, Action<IAssemblyManagerBuilder> configure = null)
         {
-            var builder = AssemblyManagerBuilder.CreateDefault().WithFeatureFilters(filters => filters.Add("Hub", type =>
-                type.IsInstantiableClass() &&
-                typeof(Hub).IsAssignableFrom(type) &&
-                type.IsDefined(typeof(RouteAttribute), false)
-            ));
+            var builder = AssemblyManagerBuilder.CreateDefault().WithHubs();
             configure?.Invoke(builder);
             var manager = builder.Build();
             services.AddSingleton(manager);
             return manager;
         }
+
+#endif
 
         /// <summary>
         /// 
