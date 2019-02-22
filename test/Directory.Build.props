@@ -1,11 +1,12 @@
 <Project>
 
-    <PropertyGroup>
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\src\**\*.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\**\*.csproj" />
+  </ItemGroup>
 
 </Project>
