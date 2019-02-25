@@ -9,7 +9,7 @@ namespace Alsein.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public class ContextedBase<TClass>
+    public abstract class ContextedBase<TClass>
         where TClass : ContextedBase<TClass>
     {
         private static object _locker = new object();

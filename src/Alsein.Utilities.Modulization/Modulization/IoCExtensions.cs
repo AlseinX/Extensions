@@ -55,5 +55,12 @@ namespace Alsein.Utilities.Modulization
         /// <returns></returns>
         public static bool IsSharingRootNamespace(this Assembly source, Assembly destination) =>
             source.FullName.StartsWith(destination.FullName.Split(',')[0].Split('.')[0]);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Type GetRegisteredEntry(this Type type) => type.GetCustomAttribute<LifetimeAnnotations.AsAttribute>(false)?.Interface ?? type;
     }
 }
