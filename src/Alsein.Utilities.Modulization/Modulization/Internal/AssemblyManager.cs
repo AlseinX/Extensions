@@ -113,7 +113,7 @@ namespace Alsein.Utilities.Modulization.Internal
 
             public FeaturesQuerier(AssemblyManager target) => _target = target;
 
-            private IEnumerable<Type> AllTypes => _target.ProjectAssemblies.SelectMany(asm => asm.ExportedTypes);
+            private IEnumerable<Type> AllTypes => _target.ProjectAssemblies.SelectMany(asm => asm.DefinedTypes);
 
             public IEnumerable<Type> this[string key] => TryGetValue(key, out var value) ? value : throw new KeyNotFoundException();
 
