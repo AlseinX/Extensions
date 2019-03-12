@@ -1,3 +1,4 @@
+#if NETSTANDARD2_0
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace Alsein.Utilities.Internal
 {
+
     internal class AsyncSelector<TSource, TResult> : IAsyncEnumerable<TResult>
     {
         private IAsyncEnumerable<TSource> _sources;
 
-        private Func<TSource, Task<TResult>> _selector;
+        private Func<TSource, ValueTask<TResult>> _selector;
 
-        public AsyncSelector(IAsyncEnumerable<TSource> sources, Func<TSource, Task<TResult>> selector)
+        public AsyncSelector(IAsyncEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector)
         {
             _sources = sources;
             _selector = selector;
@@ -48,3 +50,4 @@ namespace Alsein.Utilities.Internal
         public IAsyncEnumerator<TResult> GetEnumerator() => new Enumerator(this);
     }
 }
+#endif

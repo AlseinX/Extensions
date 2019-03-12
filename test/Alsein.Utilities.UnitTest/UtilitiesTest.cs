@@ -79,13 +79,12 @@ namespace Alsein.Utilities.Test
         {
             var result = new List<int>();
             var a = new[] { 1, 2, 3, 4, 5 };
-            var b = a.SelectAsync(async x =>
+            var b = a.SelectAwait(async x =>
             {
                 await Task.Delay(10);
                 return x;
             });
-            await a.ForAllAsync(x => Task.Delay(x));
-            await b.ForEachAsync(result.Add);
+            await b.ToListAsync();
         }
     }
 }

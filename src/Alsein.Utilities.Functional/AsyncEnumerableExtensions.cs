@@ -16,8 +16,13 @@ namespace Alsein.Utilities
         /// <param name="sources"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public static IAsyncEnumerable<TResult> SelectAsync<TSource, TResult>(this IEnumerable<TSource> sources, Func<TSource, Task<TResult>> selector) =>
-            new Internal.AsyncSelector<TSource, TResult>(sources.ToAsyncEnumerable(), selector);
+#if NETSTANDARD2_1
+        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector)
+            => sources.ToAsyncEnumerable().SelectAwait(selector);
+#endif
+#if NETSTANDARD2_0
+        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector)
+            => new Internal.AsyncSelector<TSource, TResult>(sources.ToAsyncEnumerable(), selector);
 
         /// <summary>
         /// 
@@ -25,7 +30,7 @@ namespace Alsein.Utilities
         /// <param name="sources"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public static IAsyncEnumerable<TResult> SelectAsync<TSource, TResult>(this IAsyncEnumerable<TSource> sources, Func<TSource, Task<TResult>> selector) =>
+        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IAsyncEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector) =>
             new Internal.AsyncSelector<TSource, TResult>(sources, selector);
 
         /// <summary>
@@ -50,49 +55,6 @@ namespace Alsein.Utilities
         /// <param name="sources"></param>
         /// <returns></returns>
         public static async Task<TSource[]> ToArrayAsync<TSource>(this IAsyncEnumerable<TSource> sources) => (await sources.ToListAsync()).ToArray();
-
-        /// <summary>
-        /// Executes <paramref name="action"/> for each element in <paramref name="source"/> and return the original <paramref name="source"/>.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values to invoke a transform function on.</param>
-        /// <param name="action">A transform function to apply to each element.</param>
-        /// <param name="massiveExecutionFlags"></param>
-        /// <returns>The original <paramref name="source"/>.</returns>
-        public static async Task<IAsyncEnumerable<TSource>> ForAllAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, Task> action, MassiveExecutionFlags massiveExecutionFlags = MassiveExecutionFlags.ThrowWhenExceptionOccurs)
-        {
-            var exceptions = new List<Exception>();
-            var enumerator = source.GetEnumerator();
-            while (await enumerator.MoveNext())
-            {
-                try
-                {
-                    await action(enumerator.Current);
-                }
-                catch (Exception ex) when (massiveExecutionFlags != MassiveExecutionFlags.ThrowWhenExceptionOccurs)
-                {
-                    exceptions.Add(ex);
-                }
-            }
-            if (massiveExecutionFlags == MassiveExecutionFlags.ThrowAggregateExceptions && exceptions.Any())
-            {
-                throw new AggregateException(exceptions);
-            }
-            return source;
-        }
-
-        /// <summary>
-        /// Executes <paramref name="action"/> for each element in <paramref name="source"/> and return the original <paramref name="source"/>.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-        /// <param name="source">A sequence of values to invoke a transform function on.</param>
-        /// <param name="action">A transform function to apply to each element.</param>
-        /// <param name="massiveExecutionFlags"></param>
-        /// <returns>The original <paramref name="source"/>.</returns>
-        public static async Task<IEnumerable<TSource>> ForAllAsync<TSource>(this IEnumerable<TSource> source, Func<TSource, Task> action, MassiveExecutionFlags massiveExecutionFlags = MassiveExecutionFlags.ThrowWhenExceptionOccurs)
-        {
-            await source.ToAsyncEnumerable().ForAllAsync(action);
-            return source;
-        }
+#endif
     }
 }
