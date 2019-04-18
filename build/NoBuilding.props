@@ -6,7 +6,7 @@
     <EnableApiCheck>false</EnableApiCheck>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <NoWarn>8021</NoWarn>
+    <NoWarn>8021;2008</NoWarn>
   </PropertyGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-# Alsein.Utilities
+# Alsein.Extensions
 
 Some programming conveniences for .NET programming.
 
@@ -12,4 +12,4 @@ This library supports .NET Standard 2.0 and some for .NET Standard 2.1 or .NET S
 
 Run the following command within your project directory.
 
-    dotnet add package Alsein.Utilities
+    dotnet add package Alsein.Extensions

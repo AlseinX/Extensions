@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Alsein.Utilities.sln"
+                "${workspaceFolder}/Alsein.Extensions.sln"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -17,7 +17,7 @@
             "type": "process",
             "args": [
                 "test",
-                "${workspaceFolder}/test/Alsein.Utilities.Test/Alsein.Utilities.Test.csproj"
+                "${workspaceFolder}/test/Alsein.Extensions.Test/Alsein.Extensions.Test.csproj"
             ],
             "problemMatcher": []
         }

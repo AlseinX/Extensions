@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Alsein.Extensions.Runtime.InteropServices\Alsein.Extensions.Runtime.InteropServices.csproj" />
+    <ProjectReference Include="..\Alsein.Extensions.Runtime.Proxy\Alsein.Extensions.Runtime.Proxy.csproj" />
+  </ItemGroup>
+
+</Project>

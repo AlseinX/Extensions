@@ -1,0 +1,33 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="../version.props"/>
+
+    <PropertyGroup>
+        <Title>Alsein's .NET Extensions</Title>
+        <Description>Some useful extensions for .net programming.</Description>
+        <LangVersion>8.0</LangVersion>
+        <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+        <AssemblyVersion>$(Version)</AssemblyVersion>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+        <RootNamespace>Alsein.Extensions</RootNamespace>
+        <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Authors>Alsein</Authors>
+        <Copyright>Copyright &#x00A9; Alsein.  All rights reserved.</Copyright>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <GitRepository>AlseinX/Extensions</GitRepository>
+        <PackageProjectUrl>https://github.com/$(GitRepository)</PackageProjectUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIconUrl>https://raw.githubusercontent.com/$(GitRepository)/master/Alsein.png</PackageIconUrl>
+        <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+        <MinClientVersion>3.4</MinClientVersion>
+        <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(MSBuildProjectDirectory)/../../LICENSE" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+
+</Project>
