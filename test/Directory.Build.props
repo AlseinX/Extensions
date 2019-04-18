@@ -1,12 +1,13 @@
 <Project>
 
-  <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <LangVersion>8.0</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <LangVersion>8.0</LangVersion>
+        <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\**\*.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\**\*.csproj" />
+    </ItemGroup>
 
 </Project>
