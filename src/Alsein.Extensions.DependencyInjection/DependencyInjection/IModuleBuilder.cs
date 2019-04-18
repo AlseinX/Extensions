@@ -1,11 +1,12 @@
-using System;
+using Alsein.Extensions.Patterns;
 
 namespace Alsein.Extensions.DependencyInjection
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface INestingContainer : IServiceProvider, IDisposable
+    public interface IModuleBuilder : IBuilder<IModule>
     {
+
     }
 }
