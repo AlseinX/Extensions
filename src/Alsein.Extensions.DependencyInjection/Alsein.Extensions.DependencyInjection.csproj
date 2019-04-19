@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Alsein.Extensions.Core\Alsein.Extensions.Core.csproj" />
+    <ProjectReference Include="..\Alsein.Extensions.Functional\Alsein.Extensions.Functional.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

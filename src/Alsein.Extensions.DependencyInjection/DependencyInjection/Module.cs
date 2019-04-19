@@ -11,6 +11,6 @@ namespace Alsein.Extensions.DependencyInjection
         /// 
         /// </summary>
         /// <returns></returns>
-        public static IModuleBuilder CreateBuilder() => new ModuleBuilder();
+        public static IModuleBuilder CreateBuilder() => new ReflectionModuleBuilder();
     }
 }

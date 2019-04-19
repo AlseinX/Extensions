@@ -149,5 +149,98 @@ namespace Alsein.Extensions
             }
             return source;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <typeparam name="T"></typeparam>
+        public delegate void ByRefAction<T>(ref T obj);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <returns></returns>
+        public delegate void ByRefAction<T1, T2>(ref T1 obj1, ref T2 obj2);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        /// <param name="obj3"></param>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <returns></returns>
+        public delegate void ByRefAction<T1, T2, T3>(ref T1 obj1, ref T2 obj2, ref T3 obj3);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="action"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T[] ForArray<T>(this T[] source, ByRefAction<T> action)
+        {
+            for (var i = 0; i < source.Length; i++)
+            {
+                action(ref source[i]);
+            }
+            return source;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source1"></param>
+        /// <param name="source2"></param>
+        /// <param name="action"></param>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <returns></returns>
+        public static T1[] ForArray<T1, T2>(this T1[] source1, T2[] source2, ByRefAction<T1, T2> action)
+        {
+            var default2 = default(T2);
+            for (var i = 0; i < source1.Length; i++)
+            {
+                action(
+                    ref source1[i],
+                    ref (i < source2.Length ? ref source2[i] : ref default2)
+                );
+            }
+            return source1;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source1"></param>
+        /// <param name="source2"></param>
+        /// <param name="source3"></param>
+        /// <param name="action"></param>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <returns></returns>
+        public static T1[] ForArray<T1, T2, T3>(this T1[] source1, T2[] source2, T3[] source3, ByRefAction<T1, T2, T3> action)
+        {
+            var default2 = default(T2);
+            var default3 = default(T3);
+            for (var i = 0; i < source1.Length; i++)
+            {
+                action(
+                    ref source1[i],
+                    ref (i < source2.Length ? ref source2[i] : ref default2),
+                    ref (i < source3.Length ? ref source3[i] : ref default3)
+                );
+            }
+            return source1;
+        }
     }
 }

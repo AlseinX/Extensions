@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Alsein.Extensions.DependencyInjection
 {
@@ -106,5 +108,28 @@ namespace Alsein.Extensions.DependencyInjection
         public static T ResolveOrDefault<T>(this IResolver container)
         where T : class
         => container.TryResolve(typeof(T), out var result) ? (T)result : default;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="obj"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T InjectProperties<T>(this IResolver container, T obj)
+        {
+            var properties = obj.GetType()
+                .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var property in properties)
+            {
+                if (property.GetCustomAttribute<InjectedAttribute>() is InjectedAttribute attr)
+                {
+                    property.SetValue(obj, container.Resolve(attr.Key ?? property.PropertyType));
+                }
+            }
+
+            return obj;
+        }
     }
 }

@@ -223,6 +223,44 @@ namespace Alsein.Extensions
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="source"></param>
+        /// <param name="comparer"></param>
+        /// <typeparam name="TSource"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<TSource> Max<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, int> comparer)
+        {
+            var found = new LinkedList<TSource>();
+
+            var enumerator = source.GetEnumerator();
+
+            if (!enumerator.MoveNext())
+            {
+                return Enumerable.Empty<TSource>();
+            }
+
+            found.AddFirst(enumerator.Current);
+
+            while (enumerator.MoveNext())
+            {
+                var comp = comparer(enumerator.Current, found.First.Value);
+
+                if (comp > 0)
+                {
+                    found.Clear();
+                    found.AddFirst(enumerator.Current);
+                }
+                else if (comp == 0)
+                {
+                    found.AddLast(enumerator.Current);
+                }
+            }
+
+            return found;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <param name="step"></param>

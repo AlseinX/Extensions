@@ -14,7 +14,7 @@ namespace Alsein.Extensions.DependencyInjection
         /// <param name="action"></param>
         public static IModule AddModule(this IScope scope, Action<IModuleBuilder> action)
         {
-            var builder = new Internal.ModuleBuilder();
+            var builder = new Internal.ReflectionModuleBuilder();
             action(builder);
             var result = builder.Build();
             scope.AddModule(result);
