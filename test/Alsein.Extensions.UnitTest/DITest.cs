@@ -25,10 +25,10 @@ namespace Alsein.Extensions.UnitTest
 
             container.AddModule(module => module
                 .Register(reg => reg.UseFactory(r => new TestService()))
-                .Register(reg => reg.UseType<Test2Service>())
+                .Register(reg => reg.UseType<Test2Service>().To(1))
             );
 
-            Assert.Equal(10, container.Resolve<Test2Service>().Value);
+            Assert.Equal(10, container.Resolve<Test2Service>(1).Value);
         }
     }
 }
