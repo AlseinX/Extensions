@@ -24,9 +24,9 @@ namespace Alsein.Extensions.DependencyInjection.Internal
 
         public IEnumerable<IModule> Modules => _modules.AsReadOnly();
 
-        public bool TryResolve(object key, out object result) => TryResolve(this, key, out result);
+        public bool TryResolve(object key, out object result) => TryResolve(new Internal.ResolvingContext(this), key, out result);
 
-        private bool TryResolve(IResolver resolver, object key, out object result)
+        private bool TryResolve(IResolvingContext context, object key, out object result)
         {
             lock (locker)
             {
@@ -46,7 +46,7 @@ namespace Alsein.Extensions.DependencyInjection.Internal
                         return true;
 
                     case IScope scope:
-                        result = new ScopedResolver(this, scope);
+                        result = new ResolverWithContext(this, context);
                         return true;
 
                     case Type type when type == typeof(IScopeFactory):
@@ -56,14 +56,14 @@ namespace Alsein.Extensions.DependencyInjection.Internal
 
                 foreach (var module in _modules)
                 {
-                    if (module.TryResolve(resolver, key, out result))
+                    if (module.TryResolve(context, key, out result))
                     {
                         return true;
                     }
                 }
 
                 if (_parent != null
-                    && _parent.TryResolve<IResolver>(resolver, out var useResolver)
+                    && _parent.TryResolve<IResolver>(context, out var useResolver)
                     && useResolver.TryResolve(key, out result))
                 {
                     return true;
@@ -107,13 +107,13 @@ namespace Alsein.Extensions.DependencyInjection.Internal
             }
         }
 
-        private sealed class ScopedResolver : IResolver
+        private sealed class ResolverWithContext : IResolver
         {
             private readonly Scope _this;
 
-            private readonly IScope _target;
+            private readonly IResolvingContext _target;
 
-            public ScopedResolver(Scope @this, IScope target)
+            public ResolverWithContext(Scope @this, IResolvingContext target)
             {
                 _this = @this;
                 _target = target;

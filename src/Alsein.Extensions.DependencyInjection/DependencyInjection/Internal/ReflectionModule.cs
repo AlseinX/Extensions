@@ -12,7 +12,7 @@ namespace Alsein.Extensions.DependencyInjection.Internal
             _registries = registries;
         }
 
-        public bool TryResolve(IResolver resolver, object key, out object result)
+        public bool TryResolve(IResolvingContext context, object key, out object result)
         {
             if (!_registries.TryGetValue(key, out var registry))
             {
@@ -20,7 +20,7 @@ namespace Alsein.Extensions.DependencyInjection.Internal
                 return false;
             }
 
-            result = registry.CreateInstance(resolver);
+            result = registry.CreateInstance(context.Scope);
             return true;
         }
     }

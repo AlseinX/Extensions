@@ -10,10 +10,10 @@ namespace Alsein.Extensions.DependencyInjection
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="resolver"></param>
+        /// <param name="context"></param>
         /// <param name="key"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        bool TryResolve(IResolver resolver, object key, out object result);
+        bool TryResolve(IResolvingContext context, object key, out object result);
     }
 }

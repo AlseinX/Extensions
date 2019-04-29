@@ -20,6 +20,12 @@ namespace Alsein.Extensions.DependencyInjection.Internal
             return this;
         }
 
+        public IRegistryBuilder Singleton()
+        {
+            _lifetime = null;
+            return this;
+        }
+
         protected abstract IRegistry BuildRegistry();
 
         public (IEnumerable<object>, IRegistry) Build()
