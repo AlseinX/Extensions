@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -61,6 +62,7 @@ namespace Alsein.Extensions.Modulization
             return mvcBuilder;
         }
 
+#if NETSTANDARD2_0
         /// <summary>
         /// 
         /// </summary>
@@ -71,6 +73,7 @@ namespace Alsein.Extensions.Modulization
         {
             var hubs = app.ApplicationServices.GetRequiredService<IAssemblyManager>().Features["Hub"].ToArray();
             var mapHub = typeof(HubRouteBuilder).GetMethod("MapHub", new[] { typeof(PathString), typeof(Action<HttpConnectionDispatcherOptions>) });
+
             return app.UseSignalR(builder =>
             {
                 foreach (var hub in hubs)
@@ -93,5 +96,42 @@ namespace Alsein.Extensions.Modulization
                 configure?.Invoke(builder);
             });
         }
+#endif
+
+#if NETCOREAPP3_0
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="endpoints"></param>
+        /// <returns></returns>
+        public static IEndpointRouteBuilder MapHubs(this IEndpointRouteBuilder endpoints)
+        {
+            var hubs = endpoints.ServiceProvider.GetRequiredService<IAssemblyManager>().Features["Hub"].ToArray();
+            var mapHub = typeof(HubEndpointRouteBuilderExtensions).GetMethod("MapHub", new[] { typeof(IEndpointRouteBuilder), typeof(string), typeof(Action<HttpConnectionDispatcherOptions>) });
+
+            foreach (var hub in hubs)
+            {
+                var method = mapHub.MakeGenericMethod(hub);
+
+                var option = hub.GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .Where(m => m.GetParameters().SingleOrDefault()?.ParameterType == typeof(HttpConnectionDispatcherOptions))
+                    .Where(m => m.ReturnType == typeof(void))
+                    .Select(m => m.CreateDelegate(typeof(Action<HttpConnectionDispatcherOptions>)))
+                    .OfType<Action<HttpConnectionDispatcherOptions>>().ToArray();
+
+                foreach (var route in hub.GetCustomAttributes(false).OfType<RouteAttribute>())
+                {
+                    method.Invoke(null, new object[]
+                    {
+                            endpoints,
+                            route.Template,
+                            new Action<HttpConnectionDispatcherOptions>(x => option.ForAll(o => o(x)))
+                    });
+                }
+            }
+
+            return endpoints;
+        }
+#endif
     }
 }
