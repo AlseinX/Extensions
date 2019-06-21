@@ -25,7 +25,7 @@
         <MinClientVersion>3.4</MinClientVersion>
         <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <None Include="$(MSBuildProjectDirectory)/../../LICENSE" Pack="true" PackagePath="/"/>
     </ItemGroup>

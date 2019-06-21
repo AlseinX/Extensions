@@ -13,48 +13,59 @@ namespace Alsein.Extensions
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sources"></param>
+        /// <param name="source"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-#if NETSTANDARD2_1
-        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector)
-            => sources.ToAsyncEnumerable().SelectAwait(selector);
-#endif
+        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, ValueTask<TResult>> selector)
+            => source.ToAsyncEnumerable().SelectAwait(selector);
+
 #if NETSTANDARD2_0
-        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector)
-            => new Internal.AsyncSelector<TSource, TResult>(sources.ToAsyncEnumerable(), selector);
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sources"></param>
-        /// <param name="selector"></param>
+        /// <param name="source"></param>
+        /// <typeparam name="TSource"></typeparam>
         /// <returns></returns>
-        public static IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IAsyncEnumerable<TSource> sources, Func<TSource, ValueTask<TResult>> selector) =>
-            new Internal.AsyncSelector<TSource, TResult>(sources, selector);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sources"></param>
-        /// <returns></returns>
-        public static async Task<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> sources)
+        public static async IAsyncEnumerable<TSource> ToAsyncEnumerable<TSource>(this IEnumerable<TSource> source)
         {
-            var result = new List<TSource>();
-            var enumerator = sources.GetEnumerator();
-            while (await enumerator.MoveNext())
+            foreach (var item in source)
             {
-                result.Add(enumerator.Current);
+                yield return item;
             }
-            return result;
+            await Task.CompletedTask;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sources"></param>
+        /// <param name="source"></param>
+        /// <param name="selector"></param>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public static async Task<TSource[]> ToArrayAsync<TSource>(this IAsyncEnumerable<TSource> sources) => (await sources.ToListAsync()).ToArray();
+        public static async IAsyncEnumerable<TResult> SelectAwait<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, ValueTask<TResult>> selector)
+        {
+            await foreach (var item in source)
+            {
+                yield return await selector(item);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <typeparam name="TSource"></typeparam>
+        /// <returns></returns>
+        public static async Task<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> source)
+        {
+            var result = new List<TSource>();
+            await foreach (var item in source)
+            {
+                result.Add(item);
+            }
+            return result;
+        }
 #endif
     }
 }
