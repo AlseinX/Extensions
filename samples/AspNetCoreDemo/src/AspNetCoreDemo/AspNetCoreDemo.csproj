@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Alsein.Extensions.AspNetCore" Version="0.4.4" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.15" />
   </ItemGroup>
 
 </Project>
